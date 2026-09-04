@@ -1,0 +1,63 @@
+{
+  "@@locale": "en",
+  "appTitle": "Cosmic Journey",
+  "whenDidJourneyBegin": "When did your journey begin?",
+  "birthYearLabel": "Birth year",
+  "beginJourney": "Begin journey",
+  "privacyNote": "Your birth year stays on this device.",
+  "daysLabel": "days",
+  "secondsLabel": "seconds",
+  "kmLabel": "km",
+  "menuTooltip": "Menu",
+  "menuTitle": "Menu",
+  "menuPlaceholder": "More features will arrive in a later version.",
+  "close": "Close",
+  "preparingJourney": "Preparing your journey",
+  "nextMilestone": "NEXT MILESTONE",
+  "currentSpeed": "CURRENT SPEED",
+  "milestoneCountdown": "in {days} days {clock}",
+  "@milestoneCountdown": {
+    "placeholders": {
+      "days": { "type": "String" },
+      "clock": { "type": "String" }
+    }
+  },
+  "widgetsItem": "WIDGETS",
+  "stylesItem": "STYLES",
+  "scienceItem": "CALCULATION EXPLANATION",
+  "proItem": "COSMIC PRO",
+  "proSubtitle": "Pro: widgets, styles, themes",
+  "settingsTitle": "SETTINGS",
+  "saveBirthYear": "Save birth year",
+  "widgetsSoon": "Home-screen widgets will arrive with Cosmic Pro.",
+  "stylesSoon": "Themes and colour styles will arrive with Cosmic Pro.",
+  "proSoon": "Cosmic Pro is a one-time purchase. It is not for sale in this build.",
+  "scienceTitle": "How the distance is calculated",
+  "sciencePathLength": "The number is an estimated path length relative to the cosmic microwave background rest frame.",
+  "scienceNotCentre": "It is not distance from the centre of the Universe, and it is not a GPS path.",
+  "scienceSpeed": "Base mode multiplies elapsed seconds by an average Solar-System speed of {speed} km/s.",
+  "@scienceSpeed": {
+    "placeholders": {
+      "speed": { "type": "String" }
+    }
+  },
+  "scienceFrame": "Earth’s orbital motion is not modelled here. A later Scientific Mode can replace this calculator without changing the live screen.",
+  "semanticDistance": "Estimated distance travelled: {distance} kilometres",
+  "@semanticDistance": {
+    "placeholders": {
+      "distance": { "type": "String" }
+    }
+  },
+  "semanticDays": "{days} days since your journey began",
+  "@semanticDays": {
+    "placeholders": {
+      "days": { "type": "String" }
+    }
+  },
+  "semanticSeconds": "{seconds} seconds since your journey began",
+  "@semanticSeconds": {
+    "placeholders": {
+      "seconds": { "type": "String" }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "@@locale": "uk",
+  "appTitle": "Космічна подорож",
+  "whenDidJourneyBegin": "Коли почалася твоя подорож?",
+  "birthYearLabel": "Рік народження",
+  "beginJourney": "Почати подорож",
+  "privacyNote": "Рік народження зберігається на цьому пристрої.",
+  "daysLabel": "днів",
+  "secondsLabel": "секунд",
+  "kmLabel": "km",
+  "menuTooltip": "Меню",
+  "menuTitle": "Меню",
+  "menuPlaceholder": "Інші функції з'являться пізніше.",
+  "close": "Закрити",
+  "preparingJourney": "Готуємо твою подорож",
+  "nextMilestone": "НАСТУПНА ВІХА",
+  "currentSpeed": "ШВИДКІСТЬ ЗАРАЗ",
+  "milestoneCountdown": "ще {days} дні {clock}",
+  "@milestoneCountdown": {
+    "placeholders": {
+      "days": { "type": "String" },
+      "clock": { "type": "String" }
+    }
+  },
+  "widgetsItem": "ВІДЖЕТИ",
+  "stylesItem": "СТИЛІ",
+  "scienceItem": "ПОЯСНЕННЯ РОЗРАХУНКУ",
+  "proItem": "COSMIC PRO",
+  "proSubtitle": "Pro: віджети, стилі, теми",
+  "settingsTitle": "НАЛАШТУВАННЯ",
+  "saveBirthYear": "Зберегти рік народження",
+  "widgetsSoon": "Віджети з’являться разом із Cosmic Pro.",
+  "stylesSoon": "Теми та стилі з’являться разом із Cosmic Pro.",
+  "proSoon": "Cosmic Pro — разова покупка. У цій збірці її ще немає.",
+  "scienceTitle": "Як рахується відстань",
+  "sciencePathLength": "Це орієнтовна довжина шляху відносно системи спокою реліктового випромінювання.",
+  "scienceNotCentre": "Це не відстань від центру Всесвіту і не GPS-маршрут.",
+  "scienceSpeed": "Базовий режим множить минулі секунди на середню швидкість Сонячної системи {speed} km/s.",
+  "@scienceSpeed": {
+    "placeholders": {
+      "speed": { "type": "String" }
+    }
+  },
+  "scienceFrame": "Орбітальний рух Землі тут не моделюється. Пізніше Scientific Mode зможе замінити цей калькулятор, не змінюючи живий екран.",
+  "semanticDistance": "Орієнтовна пройдена відстань: {distance} кілометрів",
+  "@semanticDistance": {
+    "placeholders": {
+      "distance": { "type": "String" }
+    }
+  },
+  "semanticDays": "{days} днів від початку подорожі",
+  "@semanticDays": {
+    "placeholders": {
+      "days": { "type": "String" }
+    }
+  },
+  "semanticSeconds": "{seconds} секунд від початку подорожі",
+  "@semanticSeconds": {
+    "placeholders": {
+      "seconds": { "type": "String" }
+    }
+  }
+}

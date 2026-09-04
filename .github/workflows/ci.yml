@@ -1,0 +1,88 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Format, analyze, test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.2"
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: dart format --output=none --set-exit-if-changed .
+      - run: flutter analyze
+      - run: flutter test
+
+  deploy-web:
+    name: Build and host Flutter web
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Enable GitHub Pages with Actions
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set +e
+          gh api "repos/${{ github.repository }}/pages" \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -f build_type='workflow'
+          gh api "repos/${{ github.repository }}/pages" \
+            --method PUT \
+            -H "Accept: application/vnd.github+json" \
+            -f build_type='workflow'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.2"
+          channel: stable
+          cache: true
+      - uses: actions/configure-pages@v5
+        id: pages
+      - name: Build web
+        working-directory: app
+        run: |
+          set -euo pipefail
+          BASE_PATH="${{ steps.pages.outputs.base_path }}"
+          if [ -z "$BASE_PATH" ] || [ "$BASE_PATH" = "/" ]; then
+            HREF="/"
+          else
+            HREF="${BASE_PATH%/}/"
+            case "$HREF" in
+              /*) ;;
+              *) HREF="/$HREF" ;;
+            esac
+          fi
+          echo "Building with --base-href $HREF"
+          flutter pub get
+          flutter build web --release --base-href "$HREF"
+          cp build/web/index.html build/web/404.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: app/build/web
+      - uses: actions/deploy-pages@v4
+        id: deployment

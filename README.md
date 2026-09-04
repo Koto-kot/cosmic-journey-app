@@ -1,64 +1,81 @@
 # Cosmic Journey
 
-A mobile app that shows, in real time, how long and how far a person has travelled through space since birth.
+A Flutter app that shows, in real time, how far and how long you have travelled
+through space since birth.
 
-## Core experience
+The main screen is a live odometer: kilometres and seconds keep moving, days
+accumulate, and nothing else competes for attention.
 
-The main screen shows only:
-- distance travelled in kilometres;
-- total days since birth;
-- total seconds since birth;
-- a minimal menu control.
+## Milestone 1
 
-The magic of the product is the continuous motion of the numbers.
+This repository currently implements the first working slice:
 
-## Product principles
+- onboarding with birth **year** only
+- local storage of that year
+- `AverageCmbJourneyCalculator` (constant CMB-relative speed)
+- live main screen: distance, days, seconds, minimal menu
+- animation pauses in the background and recalculates from wall-clock time on resume
 
-- Minimal main screen.
-- No registration in MVP.
-- Birth data stored locally.
-- Core app works offline.
-- Base version is free.
-- Cosmic Pro is a one-time purchase.
-- No ads on the main screen.
-- Scientific assumptions are documented and replaceable.
+Menu destinations for widgets, styles, and Cosmic Pro are visible placeholders.
 
-## Platforms
-
-- iOS
-- Android
-
-## Recommended stack
-
-- Flutter
-- Dart
-- Local storage
-- Local notifications
-- In-app purchases
-- Optional ads only in secondary screens
-
-## Repository structure
+## Repository layout
 
 ```text
-cosmic-journey/
-├── README.md
 ├── AGENTS.md
 ├── docs/
 │   ├── PRODUCT_OVERVIEW.md
 │   ├── PRODUCT_SPEC.md
 │   ├── ARCHITECTURE.md
-│   └── design/
-└── app/
+│   ├── SCIENCE_MODEL.md
+│   └── DEPLOYMENT.md
+└── app/                  Flutter project (iOS, Android, web)
 ```
 
-## First development milestone
+Read `AGENTS.md` and the files in `docs/` before changing behaviour.
 
-Create a Flutter app that:
-1. lets the user enter a birth year;
-2. stores it locally;
-3. calculates elapsed days and seconds;
-4. calculates estimated cosmic distance;
-5. renders the three values on a live animated screen;
-6. recalculates correctly after background/resume.
+## Run locally
 
-Read `AGENTS.md` and the files in `docs/` before implementing features.
+You need [Flutter](https://docs.flutter.dev/install) stable (3.47 or later).
+
+```bash
+cd app
+flutter pub get
+flutter run
+```
+
+Web (useful for a quick desktop preview):
+
+```bash
+cd app
+flutter run -d web-server --web-hostname 0.0.0.0 --web-port 43151
+```
+
+## Test
+
+```bash
+cd app
+dart format --output=none --set-exit-if-changed .
+flutter analyze
+flutter test
+```
+
+## CI/CD and hosting
+
+Pushing to `main` on GitHub (`Koto-kot/cosmic-journey-app`) runs format,
+analyze, and tests, then hosts the Flutter **web** build on GitHub Pages.
+
+Hosted URL after the first green deploy:
+
+https://koto-kot.github.io/cosmic-journey-app/
+
+The workflow tries to set Pages source to **GitHub Actions**. If the first
+deploy waits, approve the `github-pages` environment under
+**Settings → Environments**, and confirm **Settings → Pages → Source:
+GitHub Actions**. Details and store-release notes are in
+[`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+
+## Science, in one line
+
+Distance is `elapsedSeconds × 370 km/s`, an estimated path length relative to
+the CMB rest frame — not a distance from the centre of the Universe. See
+`docs/SCIENCE_MODEL.md`.

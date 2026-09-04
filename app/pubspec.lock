@@ -137,7 +137,7 @@ packages:
     dependency: transitive
     description:
       name: lints
-      sha256: "12f842a479589fea194fe5c5a3095abc7be0c1f2ddfa9a0e76aed1dbd26a87df"
+      sha256: "12f842a479589fea194fe5c5a3095abc7be0c1f2ddfa9e76aed1dbd26a87df"
       url: "https://pub.dev"
     source: hosted
     version: "6.1.0"

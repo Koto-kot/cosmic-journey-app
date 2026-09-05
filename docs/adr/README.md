@@ -27,6 +27,7 @@ the spec should be updated in the same change.
 | [0004](0004-github-pages-as-web-host.md) | GitHub Pages hosts the Flutter web preview | Accepted |
 | [0005](0005-entitlement-flags-before-store.md) | Testing entitlement before live billing | Accepted |
 | [0006](0006-generated-in-app-soundscapes.md) | Generated ambient beds, no licensed stems | Accepted |
+| [0007](0007-webgl-earth-r3f-on-flutter-web.md) | WebGL Earth via R3F on Flutter web | Accepted |
 
 ## Related docs
 

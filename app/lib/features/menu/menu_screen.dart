@@ -4,13 +4,21 @@ import 'package:flutter/material.dart';
 import '../../app/app_dependencies.dart';
 import '../../core/formatters/journey_number_formatter.dart';
 import '../../core/theme_tokens.dart';
+import '../../core/widgets/ad_slot.dart';
 import '../../core/widgets/cosmic_backdrop.dart';
+import '../../core/widgets/pro_badge.dart';
 import '../../services/journey_calculator/journey_profile.dart';
 import '../../services/journey_calculator/journey_snapshot.dart';
 import '../../services/milestones/milestone_estimator.dart';
+import '../atmosphere/atmosphere_screen.dart';
 import '../journey/live_journey_controller.dart';
+import '../milestones/milestones_screen.dart';
+import '../pro/pro_screen.dart';
 import '../science/science_screen.dart';
 import '../settings/settings_screen.dart';
+import '../share/share_screen.dart';
+import '../statistics/statistics_screen.dart';
+import '../styles/styles_screen.dart';
 import 'coming_soon_screen.dart';
 
 class MenuScreen extends StatelessWidget {
@@ -109,29 +117,102 @@ class _MenuBody extends StatelessWidget {
         ),
         const SizedBox(height: 18),
         _MenuRow(
+          icon: Icons.flag,
+          label: l10n.milestonesItem,
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => MilestonesScreen(
+                  dependencies: dependencies,
+                  snapshot: snapshot,
+                  formatter: formatter,
+                ),
+              ),
+            );
+          },
+        ),
+        _MenuRow(
+          icon: Icons.insights_outlined,
+          label: l10n.statisticsItem,
+          leadingBadge: true,
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => StatisticsScreen(
+                  dependencies: dependencies,
+                  snapshot: snapshot,
+                  formatter: formatter,
+                  isApproximate: profile.isApproximate,
+                ),
+              ),
+            );
+          },
+        ),
+        _MenuRow(
+          icon: Icons.ios_share,
+          label: l10n.shareItem,
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) =>
+                    ShareScreen(snapshot: snapshot, formatter: formatter),
+              ),
+            );
+          },
+        ),
+        _MenuRow(
           icon: Icons.grid_view_rounded,
           label: l10n.widgetsItem,
-          onTap: () => _openSoon(context, l10n.widgetsItem, l10n.widgetsSoon),
+          leadingBadge: true,
+          onTap: () =>
+              _openSoon(context, l10n.widgetsItem, l10n.widgetsStillSoon),
         ),
         _MenuRow(
           icon: Icons.auto_awesome,
           label: l10n.stylesItem,
-          onTap: () => _openSoon(context, l10n.stylesItem, l10n.stylesSoon),
+          leadingBadge: true,
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => StylesScreen(dependencies: dependencies),
+              ),
+            );
+          },
+        ),
+        _MenuRow(
+          icon: Icons.nights_stay_outlined,
+          label: l10n.atmosphereItem,
+          leadingBadge: true,
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => AtmosphereScreen(dependencies: dependencies),
+              ),
+            );
+          },
         ),
         _MenuRow(
           icon: Icons.help_outline,
           label: l10n.scienceItem,
           onTap: () {
             Navigator.of(context).push(
-              MaterialPageRoute<void>(builder: (_) => const ScienceScreen()),
+              MaterialPageRoute<void>(
+                builder: (_) => ScienceScreen(dependencies: dependencies),
+              ),
             );
           },
         ),
         _MenuRow(
-          leading: const _ProBadge(),
+          leading: const ProBadge(),
           label: l10n.proItem,
           subtitle: l10n.proSubtitle,
-          onTap: () => _openSoon(context, l10n.proItem, l10n.proSoon),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => ProScreen(dependencies: dependencies),
+              ),
+            );
+          },
         ),
         _MenuRow(
           icon: Icons.settings_outlined,
@@ -147,6 +228,7 @@ class _MenuBody extends StatelessWidget {
             );
           },
         ),
+        AdSlot(entitlement: dependencies.entitlement, placement: 'menu'),
       ],
     );
   }
@@ -155,32 +237,6 @@ class _MenuBody extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => ComingSoonScreen(title: title, body: body),
-      ),
-    );
-  }
-}
-
-class _ProBadge extends StatelessWidget {
-  const _ProBadge();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 28,
-      height: 28,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: CosmicTokens.accent.withValues(alpha: 0.7)),
-      ),
-      child: const Text(
-        'PRO',
-        style: TextStyle(
-          color: CosmicTokens.accent,
-          fontSize: 7,
-          fontWeight: FontWeight.w700,
-          letterSpacing: 0.2,
-        ),
       ),
     );
   }
@@ -226,7 +282,7 @@ class _InfoCard extends StatelessWidget {
               children: [
                 Text(
                   kicker,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: CosmicTokens.muted,
                     fontSize: 11,
                     letterSpacing: 1.6,
@@ -246,10 +302,10 @@ class _InfoCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     subtitle!,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: CosmicTokens.onBackground,
                       fontSize: 13,
-                      fontFeatures: [FontFeature.tabularFigures()],
+                      fontFeatures: const [FontFeature.tabularFigures()],
                     ),
                   ),
                 ],
@@ -269,6 +325,7 @@ class _MenuRow extends StatelessWidget {
     this.icon,
     this.leading,
     this.subtitle,
+    this.leadingBadge = false,
   });
 
   final IconData? icon;
@@ -276,6 +333,7 @@ class _MenuRow extends StatelessWidget {
   final String label;
   final String? subtitle;
   final VoidCallback onTap;
+  final bool leadingBadge;
 
   @override
   Widget build(BuildContext context) {
@@ -312,7 +370,7 @@ class _MenuRow extends StatelessWidget {
                         const SizedBox(height: 2),
                         Text(
                           subtitle!,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: CosmicTokens.muted,
                             fontSize: 12,
                           ),
@@ -321,11 +379,11 @@ class _MenuRow extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Icon(
-                  Icons.chevron_right,
-                  color: CosmicTokens.muted,
-                  size: 20,
-                ),
+                if (leadingBadge) ...[
+                  const ProBadge(compact: true),
+                  const SizedBox(width: 8),
+                ],
+                Icon(Icons.chevron_right, color: CosmicTokens.muted, size: 20),
               ],
             ),
           ),

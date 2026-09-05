@@ -4,15 +4,15 @@ on:
   push:
     branches: [main]
   pull_request:
-
-concurrency:
-  group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  workflow_dispatch:
 
 jobs:
   test:
     name: Format, analyze, test
     runs-on: ubuntu-latest
+    concurrency:
+      group: ci-test-${{ github.ref }}
+      cancel-in-progress: true
     defaults:
       run:
         working-directory: app
@@ -31,8 +31,11 @@ jobs:
   deploy-web:
     name: Build and host Flutter web
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    concurrency:
+      group: github-pages-deploy
+      cancel-in-progress: false
     permissions:
       contents: read
       pages: write
@@ -53,6 +56,9 @@ jobs:
         id: pages
       - name: Build web
         working-directory: app
+        env:
+          COSMIC_BUILD_SHA: ${{ github.sha }}
+          COSMIC_BUILD_REF: ${{ github.ref_name }}
         run: |
           set -euo pipefail
           BASE_PATH="${{ steps.pages.outputs.base_path }}"
@@ -65,9 +71,11 @@ jobs:
               *) HREF="/$HREF" ;;
             esac
           fi
-          echo "Building with --base-href $HREF"
+          echo "Building with --base-href $HREF sha=$COSMIC_BUILD_SHA"
           flutter pub get
-          flutter build web --release --base-href "$HREF"
+          # No service worker: GitHub Pages must show this commit, not a cached PWA.
+          flutter build web --release --base-href "$HREF" --pwa-strategy=none
+          python3 ../tool/stamp_web_build.py
           cp build/web/index.html build/web/404.html
       - uses: actions/upload-pages-artifact@v3
         with:

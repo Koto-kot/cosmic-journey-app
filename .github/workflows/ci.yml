@@ -42,6 +42,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - name: Generate Earth tab icons
+        run: python3 tool/generate_web_icons.py
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.47.2"

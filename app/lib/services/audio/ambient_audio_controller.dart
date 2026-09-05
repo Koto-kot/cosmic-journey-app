@@ -31,6 +31,10 @@ class SilentAmbientAudioController extends AmbientAudioController {
   }) : _store = store ?? InMemoryAudioPreferenceStore(enabled: enabled),
        _enabled = enabled,
        _soundscapeId = SoundscapeCatalog.resolve(soundscapeId).id,
+       // `this._volume` would rename the public `volume` parameter to
+       // `_volume`, which cross-library callers (main.dart, tests) could
+       // no longer pass by name.
+       // ignore: prefer_initializing_formals
        _volume = volume;
 
   final AudioPreferenceStore _store;

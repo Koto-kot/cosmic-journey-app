@@ -60,11 +60,20 @@ class SharedPreferencesAudioPreferenceStore implements AudioPreferenceStore {
 }
 
 class InMemoryAudioPreferenceStore implements AudioPreferenceStore {
+  // Plain params (not `this._x`) so callers keep using the friendly names
+  // `enabled`/`soundscapeId`/`volume` rather than the private field names —
+  // see ambient_audio_controller.dart's `enabled:` call, which only works
+  // because these are NOT initializing formals.
   InMemoryAudioPreferenceStore({
-    this._enabled = false,
-    this._soundscapeId,
+    bool enabled = false,
+    String? soundscapeId,
     double volume = defaultAmbientVolume,
-  }) : _volume = volume;
+  }) : // ignore: prefer_initializing_formals
+       _enabled = enabled,
+       // ignore: prefer_initializing_formals
+       _soundscapeId = soundscapeId,
+       // ignore: prefer_initializing_formals
+       _volume = volume;
 
   bool _enabled;
   String? _soundscapeId;

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:cosmic_journey/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';

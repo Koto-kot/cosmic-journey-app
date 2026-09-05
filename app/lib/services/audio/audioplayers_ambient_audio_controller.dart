@@ -19,7 +19,11 @@ class AudioplayersAmbientAudioController extends AmbientAudioController {
     String? soundscapeId,
     double volume = defaultAmbientVolume,
     AudioPlayer? player,
-  }) : _store = store,
+    // `store`/`enabled` stay plain params (not `this._x`) so main.dart can
+    // keep passing them by their friendly names.
+  }) : // ignore: prefer_initializing_formals
+       _store = store,
+       // ignore: prefer_initializing_formals
        _enabled = enabled,
        _soundscapeId = SoundscapeCatalog.resolve(soundscapeId).id,
        _volume = volume.clamp(0.0, 1.0),

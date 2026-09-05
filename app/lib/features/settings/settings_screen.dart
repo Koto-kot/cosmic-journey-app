@@ -228,7 +228,7 @@ class _TimeCoordinatesToggle extends StatelessWidget {
                   ),
                   Switch(
                     value: enabled,
-                    activeColor: CosmicTokens.accent,
+                    activeThumbColor: CosmicTokens.accent,
                     onChanged: controller.setEnabled,
                   ),
                 ],

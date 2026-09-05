@@ -28,6 +28,7 @@ the spec should be updated in the same change.
 | [0005](0005-entitlement-flags-before-store.md) | Testing entitlement before live billing | Accepted |
 | [0006](0006-generated-in-app-soundscapes.md) | Generated ambient beds, no licensed stems | Accepted |
 | [0007](0007-continuous-mode-journey-start-and-time-coordinates.md) | Continuous mode (integer, throttled), Journey Start screen, optional time coordinates | Accepted |
+| [0008](0008-webgl-earth-r3f-on-flutter-web.md) | WebGL Earth via R3F on Flutter web | Accepted |
 
 ## Related docs
 

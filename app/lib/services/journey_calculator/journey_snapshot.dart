@@ -18,4 +18,21 @@ class JourneySnapshot {
   final double speedKmPerSecond;
   final bool isApproximate;
   final DateTime calculatedAt;
+
+  /// Whole seconds for the Cosmic Pulse readout (never fractional).
+  int get wholeElapsedSeconds {
+    if (!elapsedSeconds.isFinite) {
+      return 0;
+    }
+    final floored = elapsedSeconds.floor();
+    return floored < 0 ? 0 : floored;
+  }
+
+  /// Integer kilometres for the Cosmic Pulse readout.
+  int get wholeDistanceKm {
+    if (!distanceKm.isFinite) {
+      return 0;
+    }
+    return distanceKm.round();
+  }
 }

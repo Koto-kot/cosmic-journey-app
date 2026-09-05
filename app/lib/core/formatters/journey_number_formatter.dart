@@ -5,34 +5,88 @@ import 'package:flutter/material.dart';
 /// Formats the huge live values shown on the main screen.
 ///
 /// Grouping uses a narrow no-break space so numbers do not wrap mid-value.
-/// Decimal separators follow the active locale.
+/// Decimal separators and human-scale words follow the active locale.
 class JourneyNumberFormatter {
   const JourneyNumberFormatter({
     this.decimalSeparator = '.',
     this.groupingSeparator = '\u202F',
+    this.thousandLabel = 'thousand',
+    this.millionLabel = 'million',
+    this.billionLabel = 'billion',
+    this.trillionLabel = 'trillion',
   });
 
   factory JourneyNumberFormatter.fromLocale(Locale locale) {
     if (locale.languageCode == 'uk') {
-      return const JourneyNumberFormatter(decimalSeparator: ',');
+      return const JourneyNumberFormatter(
+        decimalSeparator: ',',
+        thousandLabel: 'тис.',
+        millionLabel: 'млн',
+        billionLabel: 'млрд',
+        trillionLabel: 'трлн',
+      );
     }
     return const JourneyNumberFormatter();
   }
 
   final String decimalSeparator;
   final String groupingSeparator;
+  final String thousandLabel;
+  final String millionLabel;
+  final String billionLabel;
+  final String trillionLabel;
 
-  String distanceKm(double value, {int fractionDigits = 3}) {
-    return formatFixed(value, fractionDigits: fractionDigits);
+  /// Full grouped integer, e.g. `702 673 018 501`.
+  String formatFullNumber(num value) {
+    final negative = value.isNegative && value != 0;
+    final grouped = _groupInteger(value.round().abs().toString());
+    return negative ? '-$grouped' : grouped;
   }
 
-  String days(int value) => _groupInteger(_whole(value.toDouble()));
-
-  String seconds(double value, {int fractionDigits = 3}) {
-    return formatFixed(value, fractionDigits: fractionDigits);
+  /// Compact scale, e.g. `702.7 billion` / `702,7 млрд`.
+  String formatHumanScale(num value) {
+    final negative = value.isNegative && value != 0;
+    final abs = value.abs().toDouble();
+    final sign = negative ? '-' : '';
+    if (!abs.isFinite) {
+      return '${sign}0';
+    }
+    if (abs < 1000) {
+      return '$sign${formatFullNumber(abs)}';
+    }
+    final scales = <(double, String)>[
+      (1e12, trillionLabel),
+      (1e9, billionLabel),
+      (1e6, millionLabel),
+      (1e3, thousandLabel),
+    ];
+    for (final (threshold, label) in scales) {
+      if (abs >= threshold) {
+        final scaled = abs / threshold;
+        final digits = scaled < 10 ? 2 : 1;
+        return '$sign${_plainFixed(scaled, digits)} $label';
+      }
+    }
+    return '$sign${formatFullNumber(abs)}';
   }
 
-  /// Compact form for later widgets/share cards, e.g. `674.2B`.
+  String distanceKm(num value, {int fractionDigits = 0}) {
+    if (fractionDigits == 0) {
+      return formatFullNumber(value);
+    }
+    return formatFixed(value.toDouble(), fractionDigits: fractionDigits);
+  }
+
+  String days(int value) => formatFullNumber(value);
+
+  String seconds(num value, {int fractionDigits = 0}) {
+    if (fractionDigits == 0) {
+      return formatFullNumber(value);
+    }
+    return formatFixed(value.toDouble(), fractionDigits: fractionDigits);
+  }
+
+  /// Compact form for later widgets/share cards.
   String speedKmPerSecond(double value, {int fractionDigits = 1}) {
     final formatted = formatFixed(value.abs(), fractionDigits: fractionDigits);
     return value < 0 ? '-$formatted' : '+$formatted';
@@ -46,23 +100,7 @@ class JourneyNumberFormatter {
     return '$hours:$minutes:$seconds';
   }
 
-  String compact(double value, {int fractionDigits = 1}) {
-    final abs = value.abs();
-    final sign = value < 0 ? '-' : '';
-    final suffixes = <(double, String)>[
-      (1e12, 'T'),
-      (1e9, 'B'),
-      (1e6, 'M'),
-      (1e3, 'K'),
-    ];
-    for (final (threshold, suffix) in suffixes) {
-      if (abs >= threshold) {
-        final scaled = abs / threshold;
-        return '$sign${_plainFixed(scaled, fractionDigits)}$suffix';
-      }
-    }
-    return '$sign${_plainFixed(abs, fractionDigits)}';
-  }
+  String compact(num value) => formatHumanScale(value);
 
   String formatFixed(double value, {required int fractionDigits}) {
     final negative = value.isNegative && value != 0;
@@ -93,9 +131,11 @@ class JourneyNumberFormatter {
     return buffer.toString();
   }
 
-  String _whole(double value) => value.round().abs().toString();
-
   String _plainFixed(double value, int fractionDigits) {
-    return value.toStringAsFixed(fractionDigits);
+    final factor = math.pow(10, fractionDigits).toInt();
+    final rounded = (value * factor).round();
+    final whole = rounded ~/ factor;
+    final fraction = (rounded % factor).toString().padLeft(fractionDigits, '0');
+    return '$whole$decimalSeparator$fraction';
   }
 }

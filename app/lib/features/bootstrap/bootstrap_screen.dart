@@ -48,10 +48,7 @@ class _BootstrapScreenState extends State<BootstrapScreen> {
             child: Center(
               child: Text(
                 l10n.preparingJourney,
-                style: const TextStyle(
-                  color: CosmicTokens.muted,
-                  letterSpacing: 0.6,
-                ),
+                style: TextStyle(color: CosmicTokens.muted, letterSpacing: 0.6),
               ),
             ),
           ),

@@ -7,6 +7,7 @@ import '../../core/science_constants.dart';
 import '../../core/theme_tokens.dart';
 import '../../core/time/approximate_birth.dart';
 import '../../core/widgets/cosmic_backdrop.dart';
+import '../../core/widgets/language_switcher.dart';
 import '../../services/journey_calculator/journey_profile.dart';
 import '../journey/journey_screen.dart';
 
@@ -88,18 +89,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(
               CosmicTokens.pagePadding,
-              32,
+              8,
               CosmicTokens.pagePadding,
               24,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: LanguageSwitcher(
+                    controller: widget.dependencies.localeController,
+                  ),
+                ),
                 const Spacer(),
                 Text(
                   l10n.whenDidJourneyBegin,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 28,
                     height: 1.2,
                     fontWeight: FontWeight.w500,
@@ -110,7 +117,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 Text(
                   l10n.birthYearLabel,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: CosmicTokens.muted,
                     letterSpacing: 1.4,
                     fontSize: 12,
@@ -172,10 +179,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 Text(
                   l10n.privacyNote,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: CosmicTokens.muted,
-                    fontSize: 13,
-                  ),
+                  style: TextStyle(color: CosmicTokens.muted, fontSize: 13),
                 ),
                 const SizedBox(height: 16),
                 FilledButton(

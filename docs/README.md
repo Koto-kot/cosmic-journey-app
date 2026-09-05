@@ -15,6 +15,7 @@ be updated in the same change.
 | [COSMIC_PULSE_TECH_SPEC.md](COSMIC_PULSE_TECH_SPEC.md) | Pulse implementation notes |
 | [PHASE_2.md](PHASE_2.md) | Surfaces already built, still testing as Pro |
 | [PHASE_3.md](PHASE_3.md) | Store, ads, subscription, widgets, Scientific Mode |
+| [IDEAS.md](IDEAS.md) | Later ideas: Sky, astrology-as-map, philosophy, free vs Pro |
 | [MONETIZATION.md](MONETIZATION.md) | How ads and Pro subscription pay out |
 | [DEPLOYMENT.md](DEPLOYMENT.md) | Pages, CI, App Store, Play |
 | [adr/](adr/README.md) | Architecture Decision Records |

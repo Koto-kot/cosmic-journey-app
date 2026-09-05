@@ -20,7 +20,7 @@ the spec should be updated in the same change.
 ## Index
 
 | ADR | Title | Status |
-| --- | --- | --- |
+| --- | --- |
 | [0001](0001-record-architecture-decisions.md) | Record architecture decisions in-repo | Accepted |
 | [0002](0002-monetization-ads-and-pro-subscription.md) | Ads for free users; Cosmic Pro is a subscription | Accepted |
 | [0003](0003-dual-readout-pulse-and-flow.md) | Pulse and Flow readout modes | Accepted |
@@ -33,5 +33,6 @@ the spec should be updated in the same change.
 - [Product spec](../PRODUCT_SPEC.md)
 - [Monetization setup](../MONETIZATION.md)
 - [Phase 3 plan](../PHASE_3.md)
+- [Ideas (not scheduled)](../IDEAS.md)
 - [Phase 2 surfaces](../PHASE_2.md)
 - [Deployment](../DEPLOYMENT.md)

@@ -42,6 +42,7 @@ Menu destinations:
 │   ├── MONETIZATION.md        ads + Pro subscription payouts
 │   ├── PHASE_2.md
 │   ├── PHASE_3.md
+│   ├── IDEAS.md               later free/Pro ideas (sky, philosophy)
 │   ├── adr/                   decision history (do not delete)
 │   └── …specs and science
 └── app/                       Flutter project (iOS, Android, web)
@@ -79,7 +80,10 @@ flutter test
 ## CI/CD and hosting
 
 Pushing to `main` on GitHub (`Koto-kot/cosmic-journey-app`) runs format,
-analyze, and tests, then hosts the Flutter **web** build on GitHub Pages.
+analyze, and tests, then hosts a **new** Flutter web build on GitHub Pages.
+Each deploy writes `build.json` with the commit SHA. The PWA service worker
+is off so the browser cannot keep a stale app. Cursor `git push` does not
+reach that GitHub repo; only commits on GitHub `main` are published.
 
 Hosted URL after the first green deploy:
 

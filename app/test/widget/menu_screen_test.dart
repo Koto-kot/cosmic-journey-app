@@ -42,11 +42,13 @@ void main() {
     expect(find.text('CURRENT SPEED'), findsOneWidget);
     expect(find.text('JOURNEY START'), findsOneWidget);
     expect(find.text('2000 · approximate'), findsOneWidget);
-    expect(find.text('WIDGETS'), findsOneWidget);
-    expect(find.text('STYLES'), findsOneWidget);
     expect(find.text('MILESTONES'), findsOneWidget);
     expect(find.text('STATISTICS'), findsOneWidget);
     expect(find.text('SHARE'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('WIDGETS'), 300);
+    expect(find.text('WIDGETS'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('STYLES'), 300);
+    expect(find.text('STYLES'), findsOneWidget);
     await tester.scrollUntilVisible(find.text('ATMOSPHERE'), 300);
     expect(find.text('ATMOSPHERE'), findsOneWidget);
     await tester.scrollUntilVisible(find.text('CALCULATION EXPLANATION'), 300);

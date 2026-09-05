@@ -152,6 +152,54 @@ abstract class AppLocalizations {
   /// **'Menu'**
   String get menuTooltip;
 
+  /// No description provided for @languageTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get languageTooltip;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'ENG'**
+  String get languageEnglish;
+
+  /// No description provided for @languageUkrainian.
+  ///
+  /// In en, this message translates to:
+  /// **'UA'**
+  String get languageUkrainian;
+
+  /// No description provided for @enableAtmosphere.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable atmosphere'**
+  String get enableAtmosphere;
+
+  /// No description provided for @muteAtmosphere.
+  ///
+  /// In en, this message translates to:
+  /// **'Mute atmosphere'**
+  String get muteAtmosphere;
+
+  /// No description provided for @soundscapeDeepSpace.
+  ///
+  /// In en, this message translates to:
+  /// **'Deep Space'**
+  String get soundscapeDeepSpace;
+
+  /// No description provided for @humanScale.
+  ///
+  /// In en, this message translates to:
+  /// **'≈ {value}'**
+  String humanScale(String value);
+
+  /// No description provided for @humanScaleKm.
+  ///
+  /// In en, this message translates to:
+  /// **'≈ {value} km'**
+  String humanScaleKm(String value);
+
   /// No description provided for @menuTitle.
   ///
   /// In en, this message translates to:
@@ -251,7 +299,7 @@ abstract class AppLocalizations {
   /// No description provided for @proSoon.
   ///
   /// In en, this message translates to:
-  /// **'Cosmic Pro is a one-time purchase. It is not for sale in this build.'**
+  /// **'Cosmic Pro will be a yearly subscription. It is not for sale in this build.'**
   String get proSoon;
 
   /// No description provided for @scienceTitle.
@@ -301,6 +349,408 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{seconds} seconds since your journey began'**
   String semanticSeconds(String seconds);
+
+  /// No description provided for @milestonesItem.
+  ///
+  /// In en, this message translates to:
+  /// **'MILESTONES'**
+  String get milestonesItem;
+
+  /// No description provided for @statisticsItem.
+  ///
+  /// In en, this message translates to:
+  /// **'STATISTICS'**
+  String get statisticsItem;
+
+  /// No description provided for @shareItem.
+  ///
+  /// In en, this message translates to:
+  /// **'SHARE'**
+  String get shareItem;
+
+  /// No description provided for @atmosphereItem.
+  ///
+  /// In en, this message translates to:
+  /// **'ATMOSPHERE'**
+  String get atmosphereItem;
+
+  /// No description provided for @saveBirthDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Save birth details'**
+  String get saveBirthDetails;
+
+  /// No description provided for @birthMonthLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Month (optional)'**
+  String get birthMonthLabel;
+
+  /// No description provided for @birthDayLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Day (optional)'**
+  String get birthDayLabel;
+
+  /// No description provided for @birthTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Time (optional)'**
+  String get birthTimeLabel;
+
+  /// No description provided for @birthPrecisionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Year only uses 1 July at noon, local time. Add a date and time for a more precise odometer.'**
+  String get birthPrecisionHint;
+
+  /// No description provided for @monthNotSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Year only'**
+  String get monthNotSet;
+
+  /// No description provided for @dayNotSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get dayNotSet;
+
+  /// No description provided for @timeNotSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Noon'**
+  String get timeNotSet;
+
+  /// No description provided for @clearOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get clearOptional;
+
+  /// No description provided for @proUnlockedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You have Cosmic Pro'**
+  String get proUnlockedTitle;
+
+  /// No description provided for @proUnlockedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Every Cosmic Pro surface is unlocked in this testing build. On the store, Cosmic Pro will be a yearly subscription. Restore Purchases will connect to Apple and Google in Phase 3.'**
+  String get proUnlockedBody;
+
+  /// No description provided for @restorePurchases.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Purchases'**
+  String get restorePurchases;
+
+  /// No description provided for @restorePurchasesEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to restore in this build.'**
+  String get restorePurchasesEmpty;
+
+  /// No description provided for @milestonesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Milestones'**
+  String get milestonesTitle;
+
+  /// No description provided for @milestoneReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Reached'**
+  String get milestoneReached;
+
+  /// No description provided for @milestoneRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days {clock} remaining'**
+  String milestoneRemaining(String days, String clock);
+
+  /// No description provided for @milestoneCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get milestoneCustom;
+
+  /// No description provided for @customIntervalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom interval (km)'**
+  String get customIntervalLabel;
+
+  /// No description provided for @customIntervalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra checkpoints between the presets. Minimum 1 million km.'**
+  String get customIntervalHint;
+
+  /// No description provided for @saveCustomInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'Save interval'**
+  String get saveCustomInterval;
+
+  /// No description provided for @shareTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get shareTitle;
+
+  /// No description provided for @shareCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied to clipboard'**
+  String get shareCopied;
+
+  /// No description provided for @shareIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'A plain-text snapshot of the live integers.'**
+  String get shareIntro;
+
+  /// No description provided for @copyJourney.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy journey'**
+  String get copyJourney;
+
+  /// No description provided for @stylesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Styles'**
+  String get stylesTitle;
+
+  /// No description provided for @styleVoid.
+  ///
+  /// In en, this message translates to:
+  /// **'Void'**
+  String get styleVoid;
+
+  /// No description provided for @styleOled.
+  ///
+  /// In en, this message translates to:
+  /// **'OLED'**
+  String get styleOled;
+
+  /// No description provided for @styleMidnight.
+  ///
+  /// In en, this message translates to:
+  /// **'Midnight'**
+  String get styleMidnight;
+
+  /// No description provided for @styleAurora.
+  ///
+  /// In en, this message translates to:
+  /// **'Aurora'**
+  String get styleAurora;
+
+  /// No description provided for @styleVoidSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'The original Pulse look'**
+  String get styleVoidSubtitle;
+
+  /// No description provided for @styleOledSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'True black, no nebula wash'**
+  String get styleOledSubtitle;
+
+  /// No description provided for @styleMidnightSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Deep navy, cooler light'**
+  String get styleMidnightSubtitle;
+
+  /// No description provided for @styleAuroraSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Teal glow over forest black'**
+  String get styleAuroraSubtitle;
+
+  /// No description provided for @atmosphereTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Atmosphere'**
+  String get atmosphereTitle;
+
+  /// No description provided for @soundscapeOrbitalDrift.
+  ///
+  /// In en, this message translates to:
+  /// **'Orbital Drift'**
+  String get soundscapeOrbitalDrift;
+
+  /// No description provided for @soundscapeAuroraName.
+  ///
+  /// In en, this message translates to:
+  /// **'Aurora'**
+  String get soundscapeAuroraName;
+
+  /// No description provided for @soundscapeBluePlanet.
+  ///
+  /// In en, this message translates to:
+  /// **'Blue Planet'**
+  String get soundscapeBluePlanet;
+
+  /// No description provided for @soundscapeInterstellar.
+  ///
+  /// In en, this message translates to:
+  /// **'Interstellar'**
+  String get soundscapeInterstellar;
+
+  /// No description provided for @soundscapeVoyager.
+  ///
+  /// In en, this message translates to:
+  /// **'Voyager'**
+  String get soundscapeVoyager;
+
+  /// No description provided for @soundscapeDeepSilence.
+  ///
+  /// In en, this message translates to:
+  /// **'Deep Silence'**
+  String get soundscapeDeepSilence;
+
+  /// No description provided for @soundscapeSolarWind.
+  ///
+  /// In en, this message translates to:
+  /// **'Solar Wind'**
+  String get soundscapeSolarWind;
+
+  /// No description provided for @soundscapeIonosphere.
+  ///
+  /// In en, this message translates to:
+  /// **'Ionosphere'**
+  String get soundscapeIonosphere;
+
+  /// No description provided for @soundscapeRedDwarf.
+  ///
+  /// In en, this message translates to:
+  /// **'Red Dwarf'**
+  String get soundscapeRedDwarf;
+
+  /// No description provided for @soundscapeQuietStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet Station'**
+  String get soundscapeQuietStation;
+
+  /// No description provided for @soundscapeCometTail.
+  ///
+  /// In en, this message translates to:
+  /// **'Comet Tail'**
+  String get soundscapeCometTail;
+
+  /// No description provided for @soundscapeMagnetosphere.
+  ///
+  /// In en, this message translates to:
+  /// **'Magnetosphere'**
+  String get soundscapeMagnetosphere;
+
+  /// No description provided for @soundscapeSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Now playing'**
+  String get soundscapeSelected;
+
+  /// No description provided for @statisticsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get statisticsTitle;
+
+  /// No description provided for @statKmPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Average kilometres per day'**
+  String get statKmPerDay;
+
+  /// No description provided for @statKmPerYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Average kilometres per year'**
+  String get statKmPerYear;
+
+  /// No description provided for @statNextBillion.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to the next billion kilometres'**
+  String get statNextBillion;
+
+  /// No description provided for @statPrecision.
+  ///
+  /// In en, this message translates to:
+  /// **'Birth precision'**
+  String get statPrecision;
+
+  /// No description provided for @statApproximate.
+  ///
+  /// In en, this message translates to:
+  /// **'Approximate (year or date without time)'**
+  String get statApproximate;
+
+  /// No description provided for @statExact.
+  ///
+  /// In en, this message translates to:
+  /// **'Date and time'**
+  String get statExact;
+
+  /// No description provided for @widgetsStillSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Home-screen widgets need an App Store or Play build. They stay in Phase 3.'**
+  String get widgetsStillSoon;
+
+  /// No description provided for @proIncluded.
+  ///
+  /// In en, this message translates to:
+  /// **'Included with Cosmic Pro'**
+  String get proIncluded;
+
+  /// No description provided for @readoutModeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Readout'**
+  String get readoutModeLabel;
+
+  /// No description provided for @readoutPulse.
+  ///
+  /// In en, this message translates to:
+  /// **'Pulse'**
+  String get readoutPulse;
+
+  /// No description provided for @readoutPulseHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance and seconds update together once a second.'**
+  String get readoutPulseHint;
+
+  /// No description provided for @readoutFlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Flow'**
+  String get readoutFlow;
+
+  /// No description provided for @readoutFlowHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance and seconds move continuously on screen.'**
+  String get readoutFlowHint;
+
+  /// No description provided for @readoutSwitchToFlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to Flow readout'**
+  String get readoutSwitchToFlow;
+
+  /// No description provided for @readoutSwitchToPulse.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to Pulse readout'**
+  String get readoutSwitchToPulse;
 }
 
 class _AppLocalizationsDelegate

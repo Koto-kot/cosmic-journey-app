@@ -37,6 +37,34 @@ class AppLocalizationsUk extends AppLocalizations {
   String get menuTooltip => 'Меню';
 
   @override
+  String get languageTooltip => 'Мова';
+
+  @override
+  String get languageEnglish => 'ENG';
+
+  @override
+  String get languageUkrainian => 'UA';
+
+  @override
+  String get enableAtmosphere => 'Увімкнути атмосферу';
+
+  @override
+  String get muteAtmosphere => 'Вимкнути атмосферу';
+
+  @override
+  String get soundscapeDeepSpace => 'Глибокий космос';
+
+  @override
+  String humanScale(String value) {
+    return '≈ $value';
+  }
+
+  @override
+  String humanScaleKm(String value) {
+    return '≈ $value km';
+  }
+
+  @override
   String get menuTitle => 'Меню';
 
   @override
@@ -88,7 +116,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get proSoon =>
-      'Cosmic Pro — разова покупка. У цій збірці її ще немає.';
+      'Cosmic Pro буде річною підпискою. У цій збірці її ще немає.';
 
   @override
   String get scienceTitle => 'Як рахується відстань';
@@ -124,4 +152,213 @@ class AppLocalizationsUk extends AppLocalizations {
   String semanticSeconds(String seconds) {
     return '$seconds секунд від початку подорожі';
   }
+
+  @override
+  String get milestonesItem => 'ВІХИ';
+
+  @override
+  String get statisticsItem => 'СТАТИСТИКА';
+
+  @override
+  String get shareItem => 'ПОДІЛИТИСЯ';
+
+  @override
+  String get atmosphereItem => 'АТМОСФЕРА';
+
+  @override
+  String get saveBirthDetails => 'Зберегти дату народження';
+
+  @override
+  String get birthMonthLabel => 'Місяць (необов’язково)';
+
+  @override
+  String get birthDayLabel => 'День (необов’язково)';
+
+  @override
+  String get birthTimeLabel => 'Час (необов’язково)';
+
+  @override
+  String get birthPrecisionHint =>
+      'Якщо відомий лише рік, відлік іде від 1 липня опівдні за місцевим часом. Дата і час роблять одометр точнішим.';
+
+  @override
+  String get monthNotSet => 'Лише рік';
+
+  @override
+  String get dayNotSet => 'Не задано';
+
+  @override
+  String get timeNotSet => 'Опівдні';
+
+  @override
+  String get clearOptional => 'Скинути';
+
+  @override
+  String get proUnlockedTitle => 'У тебе Cosmic Pro';
+
+  @override
+  String get proUnlockedBody =>
+      'У цій тестовій збірці всі поверхні Cosmic Pro відкриті. У магазині Cosmic Pro буде річною підпискою. Restore Purchases підключить Apple і Google у Phase 3.';
+
+  @override
+  String get restorePurchases => 'Відновити покупки';
+
+  @override
+  String get restorePurchasesEmpty => 'У цій збірці відновлювати нічого.';
+
+  @override
+  String get milestonesTitle => 'Віхи';
+
+  @override
+  String get milestoneReached => 'Досягнуто';
+
+  @override
+  String milestoneRemaining(String days, String clock) {
+    return 'ще $days дні $clock';
+  }
+
+  @override
+  String get milestoneCustom => 'Власна';
+
+  @override
+  String get customIntervalLabel => 'Власний інтервал (km)';
+
+  @override
+  String get customIntervalHint =>
+      'Додаткові позначки між базовими. Мінімум 1 мільйон km.';
+
+  @override
+  String get saveCustomInterval => 'Зберегти інтервал';
+
+  @override
+  String get shareTitle => 'Поділитися';
+
+  @override
+  String get shareCopied => 'Скопійовано';
+
+  @override
+  String get shareIntro => 'Простий текстовий знімок живих чисел.';
+
+  @override
+  String get copyJourney => 'Копіювати подорож';
+
+  @override
+  String get stylesTitle => 'Стилі';
+
+  @override
+  String get styleVoid => 'Void';
+
+  @override
+  String get styleOled => 'OLED';
+
+  @override
+  String get styleMidnight => 'Midnight';
+
+  @override
+  String get styleAurora => 'Aurora';
+
+  @override
+  String get styleVoidSubtitle => 'Оригінальний вигляд Pulse';
+
+  @override
+  String get styleOledSubtitle => 'Чистий чорний, без туманності';
+
+  @override
+  String get styleMidnightSubtitle => 'Глибокий індиго, холодніше світло';
+
+  @override
+  String get styleAuroraSubtitle => 'Бірюзовий відблиск на лісовому чорному';
+
+  @override
+  String get atmosphereTitle => 'Атмосфера';
+
+  @override
+  String get soundscapeOrbitalDrift => 'Орбітальний дрейф';
+
+  @override
+  String get soundscapeAuroraName => 'Аврора';
+
+  @override
+  String get soundscapeBluePlanet => 'Блакитна планета';
+
+  @override
+  String get soundscapeInterstellar => 'Інтерстелар';
+
+  @override
+  String get soundscapeVoyager => 'Вояджер';
+
+  @override
+  String get soundscapeDeepSilence => 'Глибока тиша';
+
+  @override
+  String get soundscapeSolarWind => 'Сонячний вітер';
+
+  @override
+  String get soundscapeIonosphere => 'Іоносфера';
+
+  @override
+  String get soundscapeRedDwarf => 'Червоний карлик';
+
+  @override
+  String get soundscapeQuietStation => 'Тиха станція';
+
+  @override
+  String get soundscapeCometTail => 'Хвіст комети';
+
+  @override
+  String get soundscapeMagnetosphere => 'Магнітосфера';
+
+  @override
+  String get soundscapeSelected => 'Зараз грає';
+
+  @override
+  String get statisticsTitle => 'Статистика';
+
+  @override
+  String get statKmPerDay => 'Середні кілометри на день';
+
+  @override
+  String get statKmPerYear => 'Середні кілометри на рік';
+
+  @override
+  String get statNextBillion => 'Час до наступного мільярда кілометрів';
+
+  @override
+  String get statPrecision => 'Точність дати народження';
+
+  @override
+  String get statApproximate => 'Приблизно (рік або дата без часу)';
+
+  @override
+  String get statExact => 'Дата і час';
+
+  @override
+  String get widgetsStillSoon =>
+      'Віджети домашнього екрана потребують збірки App Store або Play. Це Phase 3.';
+
+  @override
+  String get proIncluded => 'Входить у Cosmic Pro';
+
+  @override
+  String get readoutModeLabel => 'Відлік';
+
+  @override
+  String get readoutPulse => 'Пульс';
+
+  @override
+  String get readoutPulseHint =>
+      'Відстань і секунди оновлюються разом раз на секунду.';
+
+  @override
+  String get readoutFlow => 'Плин';
+
+  @override
+  String get readoutFlowHint =>
+      'Відстань і секунди змінюються на екрані безперервно.';
+
+  @override
+  String get readoutSwitchToFlow => 'Перемкнути на плинний відлік';
+
+  @override
+  String get readoutSwitchToPulse => 'Перемкнути на пульс';
 }

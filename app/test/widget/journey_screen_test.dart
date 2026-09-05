@@ -1,18 +1,22 @@
-import 'package:cosmic_journey/app/app_dependencies.dart';
+import 'package:cosmic_journey/app/locale_controller.dart';
+import 'package:cosmic_journey/app/readout_mode_controller.dart';
 import 'package:cosmic_journey/core/clock.dart';
 import 'package:cosmic_journey/core/science_constants.dart';
 import 'package:cosmic_journey/features/journey/journey_screen.dart';
 import 'package:cosmic_journey/l10n/app_localizations.dart';
-import 'package:cosmic_journey/services/journey_calculator/average_cmb_journey_calculator.dart';
+import 'package:cosmic_journey/services/audio/ambient_audio_controller.dart';
 import 'package:cosmic_journey/services/journey_calculator/journey_profile.dart';
-import 'package:cosmic_journey/services/local_storage/profile_store.dart';
+import 'package:cosmic_journey/services/local_storage/locale_store.dart';
+import 'package:cosmic_journey/services/local_storage/readout_mode_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../support/test_dependencies.dart';
 
 void main() {
   late FakeClock clock;
   late JourneyProfile profile;
-  late AppDependencies dependencies;
+  late SilentAmbientAudioController audio;
 
   setUp(() {
     clock = FakeClock(DateTime.utc(2000, 1, 2));
@@ -23,16 +27,19 @@ void main() {
       createdAt: DateTime.utc(2000, 1, 1),
       updatedAt: DateTime.utc(2000, 1, 1),
     );
-    dependencies = AppDependencies(
-      clock: clock,
-      calculator: const AverageCmbJourneyCalculator(),
-      profileStore: InMemoryProfileStore(profile),
-    );
+    audio = SilentAmbientAudioController();
   });
 
-  testWidgets('main screen renders distance, days and seconds', (tester) async {
+  testWidgets('main screen renders integer distance, days, seconds and scale', (
+    tester,
+  ) async {
     await tester.pumpWidget(
-      _wrap(JourneyScreen(dependencies: dependencies, profile: profile)),
+      _wrap(
+        JourneyScreen(
+          dependencies: testDependencies(clock: clock, ambientAudio: audio),
+          profile: profile,
+        ),
+      ),
     );
     await tester.pump();
 
@@ -40,33 +47,55 @@ void main() {
     expect(find.text('days'), findsOneWidget);
     expect(find.text('seconds'), findsOneWidget);
     expect(find.byTooltip('Menu'), findsOneWidget);
+    expect(find.byTooltip('Enable atmosphere'), findsOneWidget);
+    expect(find.byTooltip('Switch to Flow readout'), findsOneWidget);
 
     const distance =
         86400 * ScienceConstants.averageCmbSpeedKmPerSecond; // 31,968,000
-    expect(find.text('31\u202F968\u202F000.000'), findsOneWidget);
+    expect(find.text('31\u202F968\u202F000'), findsOneWidget);
     expect(find.text('1'), findsOneWidget);
-    expect(find.text('86\u202F400.000'), findsOneWidget);
+    expect(find.text('86\u202F400'), findsOneWidget);
+    expect(find.text('≈ 32.0 million km'), findsOneWidget);
+    expect(find.text('≈ 86.4 thousand'), findsOneWidget);
+    expect(find.text('31\u202F968\u202F000.000'), findsNothing);
+    expect(find.text('86\u202F400.000'), findsNothing);
     expect(distance, 31968000);
   });
 
-  testWidgets('fake time changes the live values after a frame', (
+  testWidgets('distance and seconds pulse together after a whole second', (
     tester,
   ) async {
     await tester.pumpWidget(
-      _wrap(JourneyScreen(dependencies: dependencies, profile: profile)),
+      _wrap(
+        JourneyScreen(
+          dependencies: testDependencies(clock: clock, ambientAudio: audio),
+          profile: profile,
+        ),
+      ),
     );
     await tester.pump();
-    expect(find.text('86\u202F400.000'), findsOneWidget);
+    expect(find.text('86\u202F400'), findsOneWidget);
 
-    clock.advance(const Duration(seconds: 2));
+    clock.advance(const Duration(milliseconds: 400));
     await tester.pump();
-    expect(find.text('86\u202F402.000'), findsOneWidget);
-    expect(find.text('31\u202F968\u202F740.000'), findsOneWidget);
+    expect(find.text('86\u202F400'), findsOneWidget);
+    expect(find.text('31\u202F968\u202F000'), findsOneWidget);
+
+    clock.advance(const Duration(milliseconds: 1600));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 350));
+    expect(find.text('86\u202F402'), findsOneWidget);
+    expect(find.text('31\u202F968\u202F740'), findsOneWidget);
   });
 
   testWidgets('background pause freezes numbers until resume', (tester) async {
     await tester.pumpWidget(
-      _wrap(JourneyScreen(dependencies: dependencies, profile: profile)),
+      _wrap(
+        JourneyScreen(
+          dependencies: testDependencies(clock: clock, ambientAudio: audio),
+          profile: profile,
+        ),
+      ),
     );
     await tester.pump();
 
@@ -74,19 +103,123 @@ void main() {
     await tester.pump();
     clock.advance(const Duration(seconds: 8));
     await tester.pump();
-    expect(find.text('86\u202F400.000'), findsOneWidget);
+    expect(find.text('86\u202F400'), findsOneWidget);
 
     tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
     await tester.pump();
-    expect(find.text('86\u202F408.000'), findsOneWidget);
+    await tester.pump(const Duration(milliseconds: 350));
+    expect(find.text('86\u202F408'), findsOneWidget);
+  });
+
+  testWidgets('atmosphere toggle persists through the controller', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _wrap(
+        JourneyScreen(
+          dependencies: testDependencies(clock: clock, ambientAudio: audio),
+          profile: profile,
+        ),
+      ),
+    );
+    await tester.pump();
+    expect(audio.enabled, isFalse);
+
+    await tester.tap(find.byTooltip('Enable atmosphere'));
+    await tester.pump();
+    expect(audio.enabled, isTrue);
+    expect(find.byTooltip('Mute atmosphere'), findsOneWidget);
+  });
+
+  testWidgets('Ukrainian scale words appear under the live numbers', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _wrap(
+        JourneyScreen(
+          dependencies: testDependencies(
+            clock: clock,
+            ambientAudio: audio,
+            localeController: LocaleController(
+              store: InMemoryLocaleStore('uk'),
+              storedCode: 'uk',
+            ),
+          ),
+          profile: profile,
+        ),
+        locale: const Locale('uk'),
+      ),
+    );
+    await tester.pump();
+    expect(find.text('≈ 32,0 млн km'), findsOneWidget);
+    expect(find.text('≈ 86,4 тис.'), findsOneWidget);
+  });
+
+  testWidgets('reduced motion still pulses once per second without glow', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _wrap(
+        JourneyScreen(
+          dependencies: testDependencies(clock: clock, ambientAudio: audio),
+          profile: profile,
+        ),
+        disableAnimations: true,
+      ),
+    );
+    await tester.pump();
+    clock.advance(const Duration(seconds: 1));
+    await tester.pump();
+    expect(find.text('86\u202F401'), findsOneWidget);
+  });
+
+  testWidgets('Flow readout shows fractional seconds between pulses', (
+    tester,
+  ) async {
+    final readout = ReadoutModeController(
+      store: InMemoryReadoutModeStore('flow'),
+      storedId: 'flow',
+    );
+    await tester.pumpWidget(
+      _wrap(
+        JourneyScreen(
+          dependencies: testDependencies(
+            clock: clock,
+            ambientAudio: audio,
+            readoutModeController: readout,
+          ),
+          profile: profile,
+        ),
+      ),
+    );
+    await tester.pump();
+    expect(find.text('86\u202F400.000'), findsOneWidget);
+    expect(find.text('31\u202F968\u202F000.000'), findsOneWidget);
+
+    clock.advance(const Duration(milliseconds: 400));
+    await tester.pump();
+    expect(find.text('86\u202F400.400'), findsOneWidget);
+    expect(find.text('31\u202F968\u202F148.000'), findsOneWidget);
+    expect(find.byTooltip('Switch to Pulse readout'), findsOneWidget);
   });
 }
 
-Widget _wrap(Widget child) {
+Widget _wrap(
+  Widget child, {
+  Locale locale = const Locale('en'),
+  bool disableAnimations = false,
+}) {
   return MaterialApp(
-    locale: const Locale('en'),
+    locale: locale,
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
+    builder: (context, nested) {
+      final media = MediaQuery.of(context);
+      return MediaQuery(
+        data: media.copyWith(disableAnimations: disableAnimations),
+        child: nested ?? const SizedBox.shrink(),
+      );
+    },
     home: child,
   );
 }

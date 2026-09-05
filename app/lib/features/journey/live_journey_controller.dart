@@ -2,12 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/scheduler.dart';
 
 import '../../core/clock.dart';
+import '../../core/readout/readout_mode.dart';
 import '../../services/journey_calculator/journey_calculator.dart';
 import '../../services/journey_calculator/journey_profile.dart';
 import '../../services/journey_calculator/journey_snapshot.dart';
-import '../../services/journey_calculator/live_journey_interpolator.dart';
 
-/// Owns the live ticker and snapshot interpolation.
+/// Owns the live ticker. Pulse publishes one snapshot per second. Flow
+/// recalculates every frame so kilometres and seconds move on screen.
 ///
 /// Widgets must not compute distance or elapsed time themselves.
 class LiveJourneyController extends ChangeNotifier {
@@ -15,38 +16,38 @@ class LiveJourneyController extends ChangeNotifier {
     required this.clock,
     required this.calculator,
     required this.profile,
-    this.interpolator = const LiveJourneyInterpolator(),
-    this.reconcileEvery = const Duration(seconds: 5),
+    this.pulseEvery = const Duration(seconds: 1),
+    this.mode = ReadoutMode.pulse,
   });
 
   final Clock clock;
   final JourneyCalculator calculator;
   final JourneyProfile profile;
-  final LiveJourneyInterpolator interpolator;
-  final Duration reconcileEvery;
+  final Duration pulseEvery;
+  ReadoutMode mode;
 
   Ticker? _ticker;
   JourneySnapshot? _base;
   bool _paused = true;
   bool reducedMotion = false;
-  DateTime? _lastReducedNotifyAt;
+  int pulseEpoch = 0;
 
-  JourneySnapshot get snapshot {
-    final base = _base;
-    if (base == null) {
-      return _calculateNow();
-    }
-    if (_paused) {
-      return base;
-    }
-    return interpolator.interpolate(base: base, now: clock.now());
-  }
+  JourneySnapshot get snapshot => _base ?? _calculateNow();
 
   bool get isPaused => _paused;
 
+  void setMode(ReadoutMode next) {
+    if (mode == next) {
+      return;
+    }
+    mode = next;
+    _pulse(initial: true);
+    notifyListeners();
+  }
+
   void start(TickerProvider vsync) {
     _ticker?.dispose();
-    _reconcile();
+    _pulse(initial: true);
     _paused = false;
     _ticker = vsync.createTicker(_onTick)..start();
     notifyListeners();
@@ -63,9 +64,8 @@ class LiveJourneyController extends ChangeNotifier {
 
   /// Recalculate from wall-clock time, then restart the ticker.
   void resume() {
-    _reconcile();
+    _pulse(initial: true);
     _paused = false;
-    _lastReducedNotifyAt = null;
     if (_ticker != null && !_ticker!.isActive) {
       _ticker!.start();
     }
@@ -82,7 +82,7 @@ class LiveJourneyController extends ChangeNotifier {
 
   @visibleForTesting
   void reconcileNow() {
-    _reconcile();
+    _pulse(initial: true);
     notifyListeners();
   }
 
@@ -90,22 +90,25 @@ class LiveJourneyController extends ChangeNotifier {
     if (_paused) {
       return;
     }
+    if (mode == ReadoutMode.flow) {
+      _base = _calculateNow();
+      notifyListeners();
+      return;
+    }
     final now = clock.now();
-    if (reducedMotion) {
-      final last = _lastReducedNotifyAt;
-      if (last != null && now.difference(last) < const Duration(seconds: 1)) {
-        return;
-      }
-      _lastReducedNotifyAt = now;
+    final last = _base?.calculatedAt;
+    if (last != null && now.difference(last) < pulseEvery) {
+      return;
     }
-    if (now.difference(_base!.calculatedAt) >= reconcileEvery) {
-      _reconcile();
-    }
+    _pulse();
     notifyListeners();
   }
 
-  void _reconcile() {
+  void _pulse({bool initial = false}) {
     _base = _calculateNow();
+    if (!initial && mode == ReadoutMode.pulse) {
+      pulseEpoch += 1;
+    }
   }
 
   JourneySnapshot _calculateNow() {

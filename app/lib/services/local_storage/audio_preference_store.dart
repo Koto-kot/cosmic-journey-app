@@ -68,12 +68,9 @@ class InMemoryAudioPreferenceStore implements AudioPreferenceStore {
     bool enabled = false,
     String? soundscapeId,
     double volume = defaultAmbientVolume,
-  }) : // ignore: prefer_initializing_formals
-       _enabled = enabled,
-       // ignore: prefer_initializing_formals
-       _soundscapeId = soundscapeId,
-       // ignore: prefer_initializing_formals
-       _volume = volume;
+  }) : _enabled = enabled, // ignore: prefer_initializing_formals
+       _soundscapeId = soundscapeId, // ignore: prefer_initializing_formals
+       _volume = volume; // ignore: prefer_initializing_formals
 
   bool _enabled;
   String? _soundscapeId;

@@ -99,7 +99,7 @@ def paint_earth(size: int, *, maskable: bool = False) -> bytes:
     if size <= 48 and not maskable:
         radius = size * 0.34
     for y in range(size):
-        for x in range(width if False else size):
+        for x in range(size):
             color = BG
             px, py = float(x), float(y)
             dx, dy = px - cx, py - cy

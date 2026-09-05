@@ -1,10 +1,11 @@
-import 'package:cosmic_journey/app/app_dependencies.dart';
 import 'package:cosmic_journey/app/cosmic_journey_app.dart';
+import 'package:cosmic_journey/app/locale_controller.dart';
 import 'package:cosmic_journey/core/clock.dart';
-import 'package:cosmic_journey/services/journey_calculator/average_cmb_journey_calculator.dart';
-import 'package:cosmic_journey/services/local_storage/profile_store.dart';
+import 'package:cosmic_journey/services/local_storage/locale_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../support/test_dependencies.dart';
 
 void main() {
   testWidgets('first launch asks for a birth year and then shows the journey', (
@@ -14,11 +15,7 @@ void main() {
     await tester.pumpWidget(
       CosmicJourneyApp(
         localeOverride: const Locale('en'),
-        dependencies: AppDependencies(
-          clock: clock,
-          calculator: const AverageCmbJourneyCalculator(),
-          profileStore: InMemoryProfileStore(),
-        ),
+        dependencies: testDependencies(clock: clock),
       ),
     );
     await tester.pump();
@@ -41,10 +38,12 @@ void main() {
     await tester.pumpWidget(
       CosmicJourneyApp(
         localeOverride: const Locale('uk'),
-        dependencies: AppDependencies(
+        dependencies: testDependencies(
           clock: FakeClock(DateTime.utc(2026, 9, 4)),
-          calculator: const AverageCmbJourneyCalculator(),
-          profileStore: InMemoryProfileStore(),
+          localeController: LocaleController(
+            store: InMemoryLocaleStore('uk'),
+            storedCode: 'uk',
+          ),
         ),
       ),
     );

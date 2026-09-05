@@ -1,12 +1,11 @@
-import 'package:cosmic_journey/app/app_dependencies.dart';
-import 'package:cosmic_journey/core/clock.dart';
 import 'package:cosmic_journey/features/journey/journey_screen.dart';
 import 'package:cosmic_journey/l10n/app_localizations.dart';
-import 'package:cosmic_journey/services/journey_calculator/average_cmb_journey_calculator.dart';
 import 'package:cosmic_journey/services/journey_calculator/journey_profile.dart';
 import 'package:cosmic_journey/services/local_storage/profile_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../support/test_dependencies.dart';
 
 void main() {
   testWidgets('menu shows next milestone, speed and navigation rows', (
@@ -25,9 +24,7 @@ void main() {
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: JourneyScreen(
-          dependencies: AppDependencies(
-            clock: FakeClock(DateTime.utc(2000, 1, 2)),
-            calculator: const AverageCmbJourneyCalculator(),
+          dependencies: testDependencies(
             profileStore: InMemoryProfileStore(profile),
           ),
           profile: profile,
@@ -44,8 +41,17 @@ void main() {
     expect(find.text('NEXT MILESTONE'), findsOneWidget);
     expect(find.text('CURRENT SPEED'), findsOneWidget);
     expect(find.text('WIDGETS'), findsOneWidget);
+    expect(find.text('STYLES'), findsOneWidget);
+    expect(find.text('MILESTONES'), findsOneWidget);
+    expect(find.text('STATISTICS'), findsOneWidget);
+    expect(find.text('SHARE'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('ATMOSPHERE'), 300);
+    expect(find.text('ATMOSPHERE'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('CALCULATION EXPLANATION'), 300);
     expect(find.text('CALCULATION EXPLANATION'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('COSMIC PRO'), 300);
     expect(find.text('COSMIC PRO'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('SETTINGS'), 300);
     expect(find.text('SETTINGS'), findsOneWidget);
   });
 }

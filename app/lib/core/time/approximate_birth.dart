@@ -39,25 +39,58 @@ abstract final class ApproximateBirth {
     required Duration localOffset,
     required DateTime nowUtc,
   }) {
+    return resolve(year: year, localOffset: localOffset, nowUtc: nowUtc);
+  }
+
+  /// Resolves birth parts to UTC. Missing month/day keeps the year-only
+  /// convention. A full date uses noon unless [hour] and [minute] are set.
+  /// The result is never in the future.
+  static DateTime resolve({
+    required int year,
+    required Duration localOffset,
+    required DateTime nowUtc,
+    int? month,
+    int? day,
+    int? hour,
+    int? minute,
+  }) {
     final now = nowUtc.toUtc();
-    final candidates = <DateTime>[
-      canonicalUtc(year: year, localOffset: localOffset),
-      canonicalUtc(year: year, localOffset: localOffset, month: 1, day: 1),
-      canonicalUtc(
-        year: year,
-        localOffset: localOffset,
-        month: 1,
-        day: 1,
-        hour: 0,
-        minute: 0,
-      ),
-    ];
-    for (final candidate in candidates) {
-      if (!candidate.isAfter(now)) {
-        return candidate;
+    if (month == null || day == null) {
+      final candidates = <DateTime>[
+        canonicalUtc(year: year, localOffset: localOffset),
+        canonicalUtc(year: year, localOffset: localOffset, month: 1, day: 1),
+        canonicalUtc(
+          year: year,
+          localOffset: localOffset,
+          month: 1,
+          day: 1,
+          hour: 0,
+          minute: 0,
+        ),
+      ];
+      for (final candidate in candidates) {
+        if (!candidate.isAfter(now)) {
+          return candidate;
+        }
       }
+      return now;
     }
-    return now;
+    final candidate = canonicalUtc(
+      year: year,
+      localOffset: localOffset,
+      month: month,
+      day: day.clamp(1, daysInMonth(year, month)),
+      hour: hour ?? localHour,
+      minute: minute ?? localMinute,
+    );
+    if (candidate.isAfter(now)) {
+      return now;
+    }
+    return candidate;
+  }
+
+  static int daysInMonth(int year, int month) {
+    return DateTime.utc(year, month + 1, 0).day;
   }
 
   static bool isSupportedYear(int year, int currentYear) {

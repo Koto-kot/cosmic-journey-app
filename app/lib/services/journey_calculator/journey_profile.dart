@@ -13,31 +13,70 @@ class JourneyProfile {
     required this.updatedAt,
     this.birthMonth,
     this.birthDay,
+    this.birthHour,
+    this.birthMinute,
   });
 
   final int birthYear;
   final int? birthMonth;
   final int? birthDay;
+  final int? birthHour;
+  final int? birthMinute;
   final DateTime canonicalBirthUtc;
   final bool isApproximate;
   final DateTime createdAt;
   final DateTime updatedAt;
+
+  bool get hasDate => birthMonth != null && birthDay != null;
+
+  bool get hasTime => birthHour != null && birthMinute != null;
 
   factory JourneyProfile.approximateYear({
     required int year,
     required DateTime nowUtc,
     required Duration localOffset,
   }) {
+    return JourneyProfile.fromParts(
+      year: year,
+      nowUtc: nowUtc,
+      localOffset: localOffset,
+    );
+  }
+
+  factory JourneyProfile.fromParts({
+    required int year,
+    required DateTime nowUtc,
+    required Duration localOffset,
+    int? month,
+    int? day,
+    int? hour,
+    int? minute,
+    DateTime? createdAt,
+  }) {
     final now = nowUtc.toUtc();
+    final hasDate = month != null && day != null;
+    final hasTime = hour != null && minute != null;
+    final resolvedMonth = hasDate ? month : null;
+    final resolvedDay = hasDate
+        ? day.clamp(1, ApproximateBirth.daysInMonth(year, month))
+        : null;
     return JourneyProfile(
       birthYear: year,
-      canonicalBirthUtc: ApproximateBirth.resolveCanonicalUtc(
+      birthMonth: resolvedMonth,
+      birthDay: resolvedDay,
+      birthHour: hasDate && hasTime ? hour : null,
+      birthMinute: hasDate && hasTime ? minute : null,
+      canonicalBirthUtc: ApproximateBirth.resolve(
         year: year,
+        month: resolvedMonth,
+        day: resolvedDay,
+        hour: hasDate ? (hour ?? ApproximateBirth.localHour) : null,
+        minute: hasDate ? (minute ?? ApproximateBirth.localMinute) : null,
         localOffset: localOffset,
         nowUtc: now,
       ),
-      isApproximate: true,
-      createdAt: now,
+      isApproximate: !(hasDate && hasTime),
+      createdAt: createdAt?.toUtc() ?? now,
       updatedAt: now,
     );
   }
@@ -47,6 +86,8 @@ class JourneyProfile {
       'birthYear': birthYear,
       'birthMonth': birthMonth,
       'birthDay': birthDay,
+      'birthHour': birthHour,
+      'birthMinute': birthMinute,
       'canonicalBirthUtc': canonicalBirthUtc.toUtc().toIso8601String(),
       'isApproximate': isApproximate,
       'createdAt': createdAt.toUtc().toIso8601String(),
@@ -78,12 +119,21 @@ class JourneyProfile {
     }
     return JourneyProfile(
       birthYear: year,
-      birthMonth: json['birthMonth'] as int?,
-      birthDay: json['birthDay'] as int?,
+      birthMonth: _readInt(json['birthMonth']),
+      birthDay: _readInt(json['birthDay']),
+      birthHour: _readInt(json['birthHour']),
+      birthMinute: _readInt(json['birthMinute']),
       canonicalBirthUtc: canonicalUtc,
       isApproximate: approximate,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
+  }
+
+  static int? _readInt(Object? value) {
+    if (value is int) {
+      return value;
+    }
+    return null;
   }
 }

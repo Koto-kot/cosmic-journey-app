@@ -57,7 +57,9 @@ Only:
 - distance in km;
 - days;
 - total seconds;
-- minimal menu.
+- minimal menu;
+- optional, visually secondary journey-start/current date-time block
+  (off by default; see `docs/adr/0007-continuous-mode-journey-start-and-time-coordinates.md`).
 
 No explanation.
 No ad.
@@ -126,6 +128,8 @@ Requirements:
 ## 11. Menu
 Suggested:
 - Current speed
+- Journey Start (edit birth year/month/day/time; subtitle shows precision,
+  never a fabricated exact date for a year-only profile)
 - Milestones
 - Statistics
 - Widgets

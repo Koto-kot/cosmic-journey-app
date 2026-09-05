@@ -1,5 +1,9 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Default ambient bed volume. Kept low/ambient per the Codex audio spec
+/// (recommended range 0.15-0.25).
+const double defaultAmbientVolume = 0.2;
+
 abstract class AudioPreferenceStore {
   Future<bool> loadEnabled();
 
@@ -8,6 +12,10 @@ abstract class AudioPreferenceStore {
   Future<String?> loadSoundscapeId();
 
   Future<void> saveSoundscapeId(String id);
+
+  Future<double> loadVolume();
+
+  Future<void> saveVolume(double volume);
 }
 
 class SharedPreferencesAudioPreferenceStore implements AudioPreferenceStore {
@@ -15,6 +23,7 @@ class SharedPreferencesAudioPreferenceStore implements AudioPreferenceStore {
 
   static const enabledKey = 'ambient_audio_enabled_v1';
   static const soundscapeKey = 'ambient_soundscape_id_v1';
+  static const volumeKey = 'ambient_audio_volume_v1';
 
   final SharedPreferences _prefs;
 
@@ -39,13 +48,27 @@ class SharedPreferencesAudioPreferenceStore implements AudioPreferenceStore {
   Future<void> saveSoundscapeId(String id) async {
     await _prefs.setString(soundscapeKey, id);
   }
+
+  @override
+  Future<double> loadVolume() async =>
+      _prefs.getDouble(volumeKey) ?? defaultAmbientVolume;
+
+  @override
+  Future<void> saveVolume(double volume) async {
+    await _prefs.setDouble(volumeKey, volume);
+  }
 }
 
 class InMemoryAudioPreferenceStore implements AudioPreferenceStore {
-  InMemoryAudioPreferenceStore({this._enabled = false, this._soundscapeId});
+  InMemoryAudioPreferenceStore({
+    this._enabled = false,
+    this._soundscapeId,
+    double volume = defaultAmbientVolume,
+  }) : _volume = volume;
 
   bool _enabled;
   String? _soundscapeId;
+  double _volume;
 
   @override
   Future<bool> loadEnabled() async => _enabled;
@@ -61,5 +84,13 @@ class InMemoryAudioPreferenceStore implements AudioPreferenceStore {
   @override
   Future<void> saveSoundscapeId(String id) async {
     _soundscapeId = id;
+  }
+
+  @override
+  Future<double> loadVolume() async => _volume;
+
+  @override
+  Future<void> saveVolume(double volume) async {
+    _volume = volume;
   }
 }

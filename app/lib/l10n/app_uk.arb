@@ -144,11 +144,29 @@
   "statExact": "Дата і час",
   "widgetsStillSoon": "Віджети домашнього екрана потребують збірки App Store або Play. Це Phase 3.",
   "proIncluded": "Входить у Cosmic Pro",
-  "readoutModeLabel": "Відлік",
-  "readoutPulse": "Пульс",
+  "readoutModeLabel": "Рух лічильника",
+  "readoutPulse": "Cosmic Pulse",
   "readoutPulseHint": "Відстань і секунди оновлюються разом раз на секунду.",
-  "readoutFlow": "Плин",
-  "readoutFlowHint": "Відстань і секунди змінюються на екрані безперервно.",
-  "readoutSwitchToFlow": "Перемкнути на плинний відлік",
-  "readoutSwitchToPulse": "Перемкнути на пульс"
+  "readoutFlow": "Безперервний",
+  "readoutFlowHint": "Відстань і секунди оновлюються кілька разів на секунду цілими числами.",
+  "readoutSwitchToFlow": "Перемкнути на безперервний відлік",
+  "readoutSwitchToPulse": "Перемкнути на Cosmic Pulse",
+  "journeyStartItem": "ПОЧАТОК ПОДОРОЖІ",
+  "journeyStartTitle": "Початок подорожі",
+  "journeyStartApproxYear": "{year} · приблизно",
+  "@journeyStartApproxYear": {
+    "placeholders": {
+      "year": { "type": "String" }
+    }
+  },
+  "journeyStartTimeUnknown": "{date} · час невідомий",
+  "@journeyStartTimeUnknown": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "journeyStartCoordLabel": "ПОЧАТОК",
+  "nowCoordLabel": "ЗАРАЗ",
+  "showTimeCoordinatesLabel": "Показувати часові координати",
+  "atmosphereVolumeLabel": "Гучність"
 }

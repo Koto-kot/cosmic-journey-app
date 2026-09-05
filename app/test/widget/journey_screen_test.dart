@@ -1,5 +1,6 @@
 import 'package:cosmic_journey/app/locale_controller.dart';
 import 'package:cosmic_journey/app/readout_mode_controller.dart';
+import 'package:cosmic_journey/app/time_coordinates_controller.dart';
 import 'package:cosmic_journey/core/clock.dart';
 import 'package:cosmic_journey/core/science_constants.dart';
 import 'package:cosmic_journey/features/journey/journey_screen.dart';
@@ -8,6 +9,7 @@ import 'package:cosmic_journey/services/audio/ambient_audio_controller.dart';
 import 'package:cosmic_journey/services/journey_calculator/journey_profile.dart';
 import 'package:cosmic_journey/services/local_storage/locale_store.dart';
 import 'package:cosmic_journey/services/local_storage/readout_mode_store.dart';
+import 'package:cosmic_journey/services/local_storage/time_coordinates_preference_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -48,7 +50,7 @@ void main() {
     expect(find.text('seconds'), findsOneWidget);
     expect(find.byTooltip('Menu'), findsOneWidget);
     expect(find.byTooltip('Enable atmosphere'), findsOneWidget);
-    expect(find.byTooltip('Switch to Flow readout'), findsOneWidget);
+    expect(find.byTooltip('Switch to Continuous readout'), findsOneWidget);
 
     const distance =
         86400 * ScienceConstants.averageCmbSpeedKmPerSecond; // 31,968,000
@@ -173,35 +175,70 @@ void main() {
     expect(find.text('86\u202F401'), findsOneWidget);
   });
 
-  testWidgets('Flow readout shows fractional seconds between pulses', (
-    tester,
-  ) async {
-    final readout = ReadoutModeController(
-      store: InMemoryReadoutModeStore('flow'),
-      storedId: 'flow',
-    );
-    await tester.pumpWidget(
-      _wrap(
-        JourneyScreen(
-          dependencies: testDependencies(
-            clock: clock,
-            ambientAudio: audio,
-            readoutModeController: readout,
+  testWidgets(
+    'Continuous readout shows whole numbers only, refreshing faster than Pulse',
+    (tester) async {
+      final readout = ReadoutModeController(
+        store: InMemoryReadoutModeStore('flow'),
+        storedId: 'flow',
+      );
+      await tester.pumpWidget(
+        _wrap(
+          JourneyScreen(
+            dependencies: testDependencies(
+              clock: clock,
+              ambientAudio: audio,
+              readoutModeController: readout,
+            ),
+            profile: profile,
           ),
-          profile: profile,
         ),
-      ),
-    );
-    await tester.pump();
-    expect(find.text('86\u202F400.000'), findsOneWidget);
-    expect(find.text('31\u202F968\u202F000.000'), findsOneWidget);
+      );
+      await tester.pump();
+      expect(find.text('86\u202F400'), findsOneWidget);
+      expect(find.text('31\u202F968\u202F000'), findsOneWidget);
+      expect(find.text('86\u202F400.000'), findsNothing);
+      expect(find.text('31\u202F968\u202F000.000'), findsNothing);
 
-    clock.advance(const Duration(milliseconds: 400));
-    await tester.pump();
-    expect(find.text('86\u202F400.400'), findsOneWidget);
-    expect(find.text('31\u202F968\u202F148.000'), findsOneWidget);
-    expect(find.byTooltip('Switch to Pulse readout'), findsOneWidget);
-  });
+      // Crosses the ~10Hz continuous cadence (100ms) but not a full second:
+      // the whole-seconds counter stays put while distance still moves.
+      clock.advance(const Duration(milliseconds: 100));
+      await tester.pump();
+      expect(find.text('86\u202F400'), findsOneWidget);
+      expect(find.text('31\u202F968\u202F037'), findsOneWidget);
+      expect(find.byTooltip('Switch to Cosmic Pulse readout'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'time coordinates are hidden by default and shown when enabled',
+    (tester) async {
+      final coordinates = TimeCoordinatesController(
+        store: InMemoryTimeCoordinatesPreferenceStore(),
+      );
+      await tester.pumpWidget(
+        _wrap(
+          JourneyScreen(
+            dependencies: testDependencies(
+              clock: clock,
+              ambientAudio: audio,
+              timeCoordinatesController: coordinates,
+            ),
+            profile: profile,
+          ),
+        ),
+      );
+      await tester.pump();
+      expect(find.text('START'), findsNothing);
+      expect(find.text('NOW'), findsNothing);
+
+      await coordinates.setEnabled(true);
+      await tester.pump();
+      expect(find.text('START'), findsOneWidget);
+      expect(find.text('NOW'), findsOneWidget);
+      expect(find.text('2000 · approximate'), findsOneWidget);
+    },
+  );
 }
 
 Widget _wrap(

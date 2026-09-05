@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/widgets.dart';
 
@@ -5,28 +7,42 @@ import '../local_storage/audio_preference_store.dart';
 import 'ambient_audio_controller.dart';
 import 'soundscape.dart';
 
+/// Fade-in duration when a loop starts, per the Codex ambient-audio spec
+/// (recommended 1-2 seconds).
+const _fadeInDuration = Duration(milliseconds: 1500);
+const _fadeSteps = 15;
+
 class AudioplayersAmbientAudioController extends AmbientAudioController {
   AudioplayersAmbientAudioController({
-    required this._store,
-    required this._enabled,
+    required AudioPreferenceStore store,
+    required bool enabled,
     String? soundscapeId,
+    double volume = defaultAmbientVolume,
     AudioPlayer? player,
-  }) : _soundscapeId = SoundscapeCatalog.resolve(soundscapeId).id,
+  }) : _store = store,
+       _enabled = enabled,
+       _soundscapeId = SoundscapeCatalog.resolve(soundscapeId).id,
+       _volume = volume.clamp(0.0, 1.0),
        _player = player ?? AudioPlayer();
 
   final AudioPreferenceStore _store;
   final AudioPlayer _player;
   bool _enabled;
   String _soundscapeId;
+  double _volume;
   bool _foreground = true;
   bool _playing = false;
   bool _configured = false;
+  Timer? _fadeTimer;
 
   @override
   bool get enabled => _enabled;
 
   @override
   String get soundscapeId => _soundscapeId;
+
+  @override
+  double get volume => _volume;
 
   @override
   Future<void> setEnabled(bool value) async {
@@ -59,6 +75,21 @@ class AudioplayersAmbientAudioController extends AmbientAudioController {
   }
 
   @override
+  Future<void> setVolume(double value) async {
+    final clamped = value.clamp(0.0, 1.0);
+    if (clamped == _volume) {
+      return;
+    }
+    _volume = clamped;
+    notifyListeners();
+    await _store.saveVolume(clamped);
+    if (_playing) {
+      _fadeTimer?.cancel();
+      await _player.setVolume(clamped);
+    }
+  }
+
+  @override
   Future<void> handleLifecycle(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.resumed:
@@ -69,40 +100,59 @@ class AudioplayersAmbientAudioController extends AmbientAudioController {
       case AppLifecycleState.paused:
       case AppLifecycleState.detached:
         _foreground = false;
+        _fadeTimer?.cancel();
         await _player.pause();
         _playing = false;
     }
   }
 
   Future<void> _startIfAllowed() async {
-    if (!_enabled || !_foreground) {
+    if (!_enabled || !_foreground || _playing) {
+      // Already playing (or not allowed to start): never restart an active
+      // loop, so we neither create overlapping instances nor cut the loop
+      // back to zero.
       return;
     }
     try {
       if (!_configured) {
         await _player.setReleaseMode(ReleaseMode.loop);
-        await _player.setVolume(0.32);
         _configured = true;
       }
+      await _player.setVolume(0);
       final bytes = SoundscapeCatalog.resolve(_soundscapeId).loopBuilder();
       await _player.play(BytesSource(bytes, mimeType: 'audio/wav'));
       _playing = true;
+      _fadeIn();
     } catch (_) {
       _playing = false;
     }
   }
 
+  void _fadeIn() {
+    _fadeTimer?.cancel();
+    var step = 0;
+    final stepDuration = Duration(
+      microseconds: _fadeInDuration.inMicroseconds ~/ _fadeSteps,
+    );
+    _fadeTimer = Timer.periodic(stepDuration, (timer) {
+      step += 1;
+      final level = (_volume * step / _fadeSteps).clamp(0.0, _volume);
+      unawaited(_player.setVolume(level));
+      if (step >= _fadeSteps) {
+        timer.cancel();
+      }
+    });
+  }
+
   Future<void> _stop() async {
-    if (!_playing) {
-      await _player.stop();
-      return;
-    }
+    _fadeTimer?.cancel();
     await _player.stop();
     _playing = false;
   }
 
   @override
   void dispose() {
+    _fadeTimer?.cancel();
     _player.dispose();
     super.dispose();
   }

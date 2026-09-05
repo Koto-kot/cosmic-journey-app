@@ -7,8 +7,10 @@ import '../../services/journey_calculator/journey_calculator.dart';
 import '../../services/journey_calculator/journey_profile.dart';
 import '../../services/journey_calculator/journey_snapshot.dart';
 
-/// Owns the live ticker. Pulse publishes one snapshot per second. Flow
-/// recalculates every frame so kilometres and seconds move on screen.
+/// Owns the live ticker. Pulse publishes one snapshot per second. Continuous
+/// (internal id `flow`) recalculates at [continuousEvery] — a presentation
+/// ticker, not per-frame — so integer kilometres and seconds move on screen
+/// without the cost of a 60Hz recalculation. See ADR 0007.
 ///
 /// Widgets must not compute distance or elapsed time themselves.
 class LiveJourneyController extends ChangeNotifier {
@@ -17,6 +19,7 @@ class LiveJourneyController extends ChangeNotifier {
     required this.calculator,
     required this.profile,
     this.pulseEvery = const Duration(seconds: 1),
+    this.continuousEvery = const Duration(milliseconds: 100),
     this.mode = ReadoutMode.pulse,
   });
 
@@ -24,6 +27,11 @@ class LiveJourneyController extends ChangeNotifier {
   final JourneyCalculator calculator;
   final JourneyProfile profile;
   final Duration pulseEvery;
+
+  /// Cadence of the Continuous-mode presentation ticker (~10Hz default).
+  /// Every update still recalculates from the actual clock; this only
+  /// throttles how often the UI is asked to redraw.
+  final Duration continuousEvery;
   ReadoutMode mode;
 
   Ticker? _ticker;
@@ -90,13 +98,16 @@ class LiveJourneyController extends ChangeNotifier {
     if (_paused) {
       return;
     }
+    final now = clock.now();
+    final last = _base?.calculatedAt;
     if (mode == ReadoutMode.flow) {
+      if (last != null && now.difference(last) < continuousEvery) {
+        return;
+      }
       _base = _calculateNow();
       notifyListeners();
       return;
     }
-    final now = clock.now();
-    final last = _base?.calculatedAt;
     if (last != null && now.difference(last) < pulseEvery) {
       return;
     }

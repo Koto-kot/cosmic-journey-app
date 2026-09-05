@@ -40,6 +40,8 @@ void main() {
     expect(find.text('Menu'), findsWidgets);
     expect(find.text('NEXT MILESTONE'), findsOneWidget);
     expect(find.text('CURRENT SPEED'), findsOneWidget);
+    expect(find.text('JOURNEY START'), findsOneWidget);
+    expect(find.text('2000 · approximate'), findsOneWidget);
     expect(find.text('WIDGETS'), findsOneWidget);
     expect(find.text('STYLES'), findsOneWidget);
     expect(find.text('MILESTONES'), findsOneWidget);

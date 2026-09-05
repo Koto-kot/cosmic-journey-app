@@ -340,25 +340,53 @@ class AppLocalizationsUk extends AppLocalizations {
   String get proIncluded => 'Входить у Cosmic Pro';
 
   @override
-  String get readoutModeLabel => 'Відлік';
+  String get readoutModeLabel => 'Рух лічильника';
 
   @override
-  String get readoutPulse => 'Пульс';
+  String get readoutPulse => 'Cosmic Pulse';
 
   @override
   String get readoutPulseHint =>
       'Відстань і секунди оновлюються разом раз на секунду.';
 
   @override
-  String get readoutFlow => 'Плин';
+  String get readoutFlow => 'Безперервний';
 
   @override
   String get readoutFlowHint =>
-      'Відстань і секунди змінюються на екрані безперервно.';
+      'Відстань і секунди оновлюються кілька разів на секунду цілими числами.';
 
   @override
-  String get readoutSwitchToFlow => 'Перемкнути на плинний відлік';
+  String get readoutSwitchToFlow => 'Перемкнути на безперервний відлік';
 
   @override
-  String get readoutSwitchToPulse => 'Перемкнути на пульс';
+  String get readoutSwitchToPulse => 'Перемкнути на Cosmic Pulse';
+
+  @override
+  String get journeyStartItem => 'ПОЧАТОК ПОДОРОЖІ';
+
+  @override
+  String get journeyStartTitle => 'Початок подорожі';
+
+  @override
+  String journeyStartApproxYear(String year) {
+    return '$year · приблизно';
+  }
+
+  @override
+  String journeyStartTimeUnknown(String date) {
+    return '$date · час невідомий';
+  }
+
+  @override
+  String get journeyStartCoordLabel => 'ПОЧАТОК';
+
+  @override
+  String get nowCoordLabel => 'ЗАРАЗ';
+
+  @override
+  String get showTimeCoordinatesLabel => 'Показувати часові координати';
+
+  @override
+  String get atmosphereVolumeLabel => 'Гучність';
 }

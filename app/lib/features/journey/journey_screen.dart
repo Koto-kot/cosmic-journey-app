@@ -2,6 +2,7 @@ import 'package:cosmic_journey/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 import '../../app/app_dependencies.dart';
+import '../../core/clock.dart';
 import '../../core/formatters/journey_number_formatter.dart';
 import '../../core/readout/readout_mode.dart';
 import '../../core/theme_tokens.dart';
@@ -15,6 +16,7 @@ import '../../services/journey_calculator/journey_profile.dart';
 import '../../services/journey_calculator/journey_snapshot.dart';
 import '../menu/menu_screen.dart';
 import 'live_journey_controller.dart';
+import 'time_coordinates_block.dart';
 
 class JourneyScreen extends StatefulWidget {
   const JourneyScreen({
@@ -170,7 +172,11 @@ class _JourneyScreenState extends State<JourneyScreen>
                   horizontal: CosmicTokens.pagePadding,
                 ),
                 child: AnimatedBuilder(
-                  animation: Listenable.merge([_controller, _pulse]),
+                  animation: Listenable.merge([
+                    _controller,
+                    _pulse,
+                    widget.dependencies.timeCoordinatesController,
+                  ]),
                   builder: (context, _) {
                     return _JourneyReadout(
                       snapshot: _controller.snapshot,
@@ -183,6 +189,11 @@ class _JourneyScreenState extends State<JourneyScreen>
                                 ? 0
                                 : pulseGlow(_pulse.value)),
                       reducedMotion: _controller.reducedMotion,
+                      showTimeCoordinates:
+                          widget.dependencies.timeCoordinatesController
+                              .enabled,
+                      profile: widget.profile,
+                      clock: widget.dependencies.clock,
                     );
                   },
                 ),
@@ -203,6 +214,9 @@ class _JourneyReadout extends StatelessWidget {
     required this.mode,
     required this.glow,
     required this.reducedMotion,
+    required this.showTimeCoordinates,
+    required this.profile,
+    required this.clock,
   });
 
   final JourneySnapshot snapshot;
@@ -211,23 +225,23 @@ class _JourneyReadout extends StatelessWidget {
   final ReadoutMode mode;
   final double glow;
   final bool reducedMotion;
+  final bool showTimeCoordinates;
+  final JourneyProfile profile;
+  final Clock clock;
 
   @override
   Widget build(BuildContext context) {
     final flow = mode == ReadoutMode.flow;
-    final distanceKm = flow
-        ? snapshot.distanceKm
-        : snapshot.wholeDistanceKm.toDouble();
-    final seconds = flow
-        ? snapshot.elapsedSeconds
-        : snapshot.wholeElapsedSeconds.toDouble();
-    final distance = flow
-        ? formatter.distanceKm(distanceKm, fractionDigits: 3)
-        : formatter.formatFullNumber(snapshot.wholeDistanceKm);
+    // Continuous (flow) mode still refreshes several times a second, but the
+    // main-screen readout is always the whole-number odometer — no decimal
+    // noise in either mode (ADR 0007).
+    final distanceKm = snapshot.wholeDistanceKm.toDouble();
+    final seconds = snapshot.wholeElapsedSeconds.toDouble();
+    final distance = formatter.formatFullNumber(snapshot.wholeDistanceKm);
     final days = formatter.days(snapshot.fullDays);
-    final secondsText = flow
-        ? formatter.seconds(seconds, fractionDigits: 3)
-        : formatter.formatFullNumber(snapshot.wholeElapsedSeconds);
+    final secondsText = formatter.formatFullNumber(
+      snapshot.wholeElapsedSeconds,
+    );
     final distanceScale = l10n.humanScaleKm(
       formatter.formatHumanScale(distanceKm),
     );
@@ -253,6 +267,8 @@ class _JourneyReadout extends StatelessWidget {
                     SizedBox(height: compact ? 28 : 40),
                     EarthHero(size: earthSize),
                     SizedBox(height: compact ? 12 : 20),
+                    if (showTimeCoordinates)
+                      TimeCoordinatesBlock(clock: clock, profile: profile),
                     Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

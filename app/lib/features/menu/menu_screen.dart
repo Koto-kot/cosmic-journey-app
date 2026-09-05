@@ -11,6 +11,8 @@ import '../../services/journey_calculator/journey_profile.dart';
 import '../../services/journey_calculator/journey_snapshot.dart';
 import '../../services/milestones/milestone_estimator.dart';
 import '../atmosphere/atmosphere_screen.dart';
+import '../journey/journey_start_precision.dart';
+import '../journey/journey_start_screen.dart';
 import '../journey/live_journey_controller.dart';
 import '../milestones/milestones_screen.dart';
 import '../pro/pro_screen.dart';
@@ -116,6 +118,25 @@ class _MenuBody extends StatelessWidget {
               '${formatter.speedKmPerSecond(snapshot.speedKmPerSecond)} km/s',
         ),
         const SizedBox(height: 18),
+        _MenuRow(
+          icon: Icons.rocket_launch_outlined,
+          label: l10n.journeyStartItem,
+          subtitle: JourneyStartPrecision.subtitle(
+            profile,
+            l10n,
+            Localizations.localeOf(context),
+          ),
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => JourneyStartScreen(
+                  dependencies: dependencies,
+                  profile: profile,
+                ),
+              ),
+            );
+          },
+        ),
         _MenuRow(
           icon: Icons.flag,
           label: l10n.milestonesItem,

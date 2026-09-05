@@ -92,21 +92,46 @@ void main() {
     expect(snapshot.calculatedAt, clock.now());
   });
 
-  testWidgets('Flow mode updates distance and seconds between whole seconds', (
+  testWidgets(
+    'Continuous mode throttles to its presentation cadence, not every frame',
+    (tester) async {
+      controller.setMode(ReadoutMode.flow);
+      await tester.pumpWidget(_Harness(controller: controller));
+      await tester.pump();
+      final initialCalculatedAt = controller.snapshot.calculatedAt;
+      expect(controller.snapshot.wholeElapsedSeconds, 86400);
+
+      // Below the ~10Hz continuous cadence (100ms default): no recalculation.
+      clock.advance(const Duration(milliseconds: 40));
+      await tester.pump();
+      expect(controller.snapshot.calculatedAt, initialCalculatedAt);
+
+      // Crossing the cadence threshold recalculates from the true clock.
+      clock.advance(const Duration(milliseconds: 70));
+      await tester.pump();
+      expect(controller.snapshot.calculatedAt, clock.now());
+      expect(controller.snapshot.elapsedSeconds, greaterThan(86400));
+    },
+  );
+
+  testWidgets('Continuous mode never assumes a fixed increment', (
     tester,
   ) async {
     controller.setMode(ReadoutMode.flow);
     await tester.pumpWidget(_Harness(controller: controller));
     await tester.pump();
-    expect(controller.snapshot.elapsedSeconds, 86400);
 
-    clock.advance(const Duration(milliseconds: 400));
+    clock.advance(const Duration(milliseconds: 250));
     await tester.pump();
-    expect(controller.snapshot.elapsedSeconds, closeTo(86400.4, 1e-9));
+    final snapshot = controller.snapshot;
+    expect(snapshot.elapsedSeconds, closeTo(86400.25, 1e-9));
     expect(
-      controller.snapshot.distanceKm,
-      closeTo(86400.4 * ScienceConstants.averageCmbSpeedKmPerSecond, 1e-6),
+      snapshot.distanceKm,
+      closeTo(86400.25 * ScienceConstants.averageCmbSpeedKmPerSecond, 1e-6),
     );
+    // The main screen never renders this fractional value directly (see
+    // journey_screen.dart / ADR 0007) — it always reads wholeElapsedSeconds.
+    expect(snapshot.wholeElapsedSeconds, 86400);
   });
 }
 

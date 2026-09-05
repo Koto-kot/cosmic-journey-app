@@ -341,25 +341,53 @@ class AppLocalizationsEn extends AppLocalizations {
   String get proIncluded => 'Included with Cosmic Pro';
 
   @override
-  String get readoutModeLabel => 'Readout';
+  String get readoutModeLabel => 'Counter motion';
 
   @override
-  String get readoutPulse => 'Pulse';
+  String get readoutPulse => 'Cosmic Pulse';
 
   @override
   String get readoutPulseHint =>
       'Distance and seconds update together once a second.';
 
   @override
-  String get readoutFlow => 'Flow';
+  String get readoutFlow => 'Continuous';
 
   @override
   String get readoutFlowHint =>
-      'Distance and seconds move continuously on screen.';
+      'Distance and seconds refresh several times a second, as whole numbers.';
 
   @override
-  String get readoutSwitchToFlow => 'Switch to Flow readout';
+  String get readoutSwitchToFlow => 'Switch to Continuous readout';
 
   @override
-  String get readoutSwitchToPulse => 'Switch to Pulse readout';
+  String get readoutSwitchToPulse => 'Switch to Cosmic Pulse readout';
+
+  @override
+  String get journeyStartItem => 'JOURNEY START';
+
+  @override
+  String get journeyStartTitle => 'Journey Start';
+
+  @override
+  String journeyStartApproxYear(String year) {
+    return '$year · approximate';
+  }
+
+  @override
+  String journeyStartTimeUnknown(String date) {
+    return '$date · time unknown';
+  }
+
+  @override
+  String get journeyStartCoordLabel => 'START';
+
+  @override
+  String get nowCoordLabel => 'NOW';
+
+  @override
+  String get showTimeCoordinatesLabel => 'Show time coordinates';
+
+  @override
+  String get atmosphereVolumeLabel => 'Volume';
 }

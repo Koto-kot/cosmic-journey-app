@@ -144,11 +144,29 @@
   "statExact": "Date and time",
   "widgetsStillSoon": "Home-screen widgets need an App Store or Play build. They stay in Phase 3.",
   "proIncluded": "Included with Cosmic Pro",
-  "readoutModeLabel": "Readout",
-  "readoutPulse": "Pulse",
+  "readoutModeLabel": "Counter motion",
+  "readoutPulse": "Cosmic Pulse",
   "readoutPulseHint": "Distance and seconds update together once a second.",
-  "readoutFlow": "Flow",
-  "readoutFlowHint": "Distance and seconds move continuously on screen.",
-  "readoutSwitchToFlow": "Switch to Flow readout",
-  "readoutSwitchToPulse": "Switch to Pulse readout"
+  "readoutFlow": "Continuous",
+  "readoutFlowHint": "Distance and seconds refresh several times a second, as whole numbers.",
+  "readoutSwitchToFlow": "Switch to Continuous readout",
+  "readoutSwitchToPulse": "Switch to Cosmic Pulse readout",
+  "journeyStartItem": "JOURNEY START",
+  "journeyStartTitle": "Journey Start",
+  "journeyStartApproxYear": "{year} · approximate",
+  "@journeyStartApproxYear": {
+    "placeholders": {
+      "year": { "type": "String" }
+    }
+  },
+  "journeyStartTimeUnknown": "{date} · time unknown",
+  "@journeyStartTimeUnknown": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "journeyStartCoordLabel": "START",
+  "nowCoordLabel": "NOW",
+  "showTimeCoordinatesLabel": "Show time coordinates",
+  "atmosphereVolumeLabel": "Volume"
 }

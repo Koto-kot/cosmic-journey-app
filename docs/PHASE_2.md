@@ -5,10 +5,12 @@
 
 Phase 1 is the Pulse odometer: year-only onboarding, live integers,
 human-scale subtitles, language switch, Deep Space (off by default), science,
-and settings. Flow readout is an opt-in (ADR 0003).
+and settings. Continuous readout (integer, ~10Hz) is an opt-in (ADR 0003,
+ADR 0007).
 
-Phase 2 is in the tree: entitlement flags, optional birth date/time, milestones,
-share, styles, extra soundscapes, statistics, and the Cosmic Pro status screen.
+Phase 2 is in the tree: entitlement flags, optional birth date/time (its own
+Journey Start screen), milestones, share, styles, extra soundscapes,
+statistics, optional time coordinates, and the Cosmic Pro status screen.
 Scientific Mode, store widgets, live ads, and the Pro **subscription** are
 **Phase 3** — see [`PHASE_3.md`](PHASE_3.md) and
 [`MONETIZATION.md`](MONETIZATION.md).

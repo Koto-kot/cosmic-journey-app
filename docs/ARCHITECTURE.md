@@ -152,9 +152,12 @@ Dedicated formatters for:
 - compact billions/trillions as full words (`billion` / `млрд`);
 - locale decimals.
 
-Cosmic Pulse reads integers only on the main screen (`formatFullNumber`) and
-shows a secondary `formatHumanScale` line. Live interpolation between frames
-is not used on the default journey screen.
+Both readout modes read integers only on the main screen (`formatFullNumber`)
+and show a secondary `formatHumanScale` line — Pulse recalculates once a
+second, Continuous recalculates on a throttled ~10Hz presentation ticker.
+Neither mode shows decimal digits on the main counters, and live
+interpolation between frames is not used on the default journey screen. See
+`docs/adr/0007-continuous-mode-journey-start-and-time-coordinates.md`.
 
 ## Audio
 Ambient sound is a separate service from Cosmic Pulse.

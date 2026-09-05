@@ -713,13 +713,13 @@ abstract class AppLocalizations {
   /// No description provided for @readoutModeLabel.
   ///
   /// In en, this message translates to:
-  /// **'Readout'**
+  /// **'Counter motion'**
   String get readoutModeLabel;
 
   /// No description provided for @readoutPulse.
   ///
   /// In en, this message translates to:
-  /// **'Pulse'**
+  /// **'Cosmic Pulse'**
   String get readoutPulse;
 
   /// No description provided for @readoutPulseHint.
@@ -731,26 +731,74 @@ abstract class AppLocalizations {
   /// No description provided for @readoutFlow.
   ///
   /// In en, this message translates to:
-  /// **'Flow'**
+  /// **'Continuous'**
   String get readoutFlow;
 
   /// No description provided for @readoutFlowHint.
   ///
   /// In en, this message translates to:
-  /// **'Distance and seconds move continuously on screen.'**
+  /// **'Distance and seconds refresh several times a second, as whole numbers.'**
   String get readoutFlowHint;
 
   /// No description provided for @readoutSwitchToFlow.
   ///
   /// In en, this message translates to:
-  /// **'Switch to Flow readout'**
+  /// **'Switch to Continuous readout'**
   String get readoutSwitchToFlow;
 
   /// No description provided for @readoutSwitchToPulse.
   ///
   /// In en, this message translates to:
-  /// **'Switch to Pulse readout'**
+  /// **'Switch to Cosmic Pulse readout'**
   String get readoutSwitchToPulse;
+
+  /// No description provided for @journeyStartItem.
+  ///
+  /// In en, this message translates to:
+  /// **'JOURNEY START'**
+  String get journeyStartItem;
+
+  /// No description provided for @journeyStartTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Journey Start'**
+  String get journeyStartTitle;
+
+  /// No description provided for @journeyStartApproxYear.
+  ///
+  /// In en, this message translates to:
+  /// **'{year} · approximate'**
+  String journeyStartApproxYear(String year);
+
+  /// No description provided for @journeyStartTimeUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'{date} · time unknown'**
+  String journeyStartTimeUnknown(String date);
+
+  /// No description provided for @journeyStartCoordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'START'**
+  String get journeyStartCoordLabel;
+
+  /// No description provided for @nowCoordLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'NOW'**
+  String get nowCoordLabel;
+
+  /// No description provided for @showTimeCoordinatesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Show time coordinates'**
+  String get showTimeCoordinatesLabel;
+
+  /// No description provided for @atmosphereVolumeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Volume'**
+  String get atmosphereVolumeLabel;
 }
 
 class _AppLocalizationsDelegate

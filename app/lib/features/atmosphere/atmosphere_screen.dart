@@ -24,6 +24,20 @@ class AtmosphereScreen extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
             children: [
+              Text(
+                l10n.atmosphereVolumeLabel,
+                style: TextStyle(
+                  color: CosmicTokens.muted,
+                  letterSpacing: 1.4,
+                  fontSize: 12,
+                ),
+              ),
+              Slider(
+                value: dependencies.ambientAudio.volume,
+                activeColor: CosmicTokens.accent,
+                onChanged: (value) => dependencies.ambientAudio.setVolume(value),
+              ),
+              const SizedBox(height: 8),
               for (final soundscape in SoundscapeCatalog.all) ...[
                 _SoundscapeTile(
                   title: _name(l10n, soundscape.id),

@@ -21,8 +21,11 @@ Do not add a backend unless a real product requirement later makes it necessary.
    - optional atmosphere control;
    - minimal menu control.
 2. Default live readout is Cosmic Pulse: distance and seconds update once
-   per second from the same timestamp. Flow (per-frame decimals) is an
-   optional, persisted mode. See `docs/adr/0003-dual-readout-pulse-and-flow.md`.
+   per second from the same timestamp. Continuous is an optional, persisted
+   mode: whole-number distance and seconds refreshed a few times a second
+   (~10Hz), never per-frame and never with decimal digits. See
+   `docs/adr/0003-dual-readout-pulse-and-flow.md` and
+   `docs/adr/0007-continuous-mode-journey-start-and-time-coordinates.md`.
 3. No explanatory paragraphs on the main screen.
 4. No ads on the main screen.
 5. No registration, email, phone, password, or account in MVP.
@@ -63,7 +66,9 @@ Store locally:
 - notification settings;
 - Pro entitlement cache;
 - locale/preferences;
-- ambient audio on/off.
+- ambient audio on/off, soundscape id, and volume;
+- readout mode (Pulse/Continuous);
+- whether the optional time-coordinates block is shown.
 
 ## Time handling
 Use UTC internally.

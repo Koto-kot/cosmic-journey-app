@@ -3,8 +3,9 @@
 A Flutter app that shows, in real time, how far and how long you have travelled
 through space since birth.
 
-The main screen is a live odometer: kilometres and seconds keep moving, days
-accumulate, and nothing else competes for attention.
+The main screen is a Cosmic Pulse odometer: kilometres and seconds update
+together once per second, a human-scale subtitle explains the magnitude, and
+days stay still between midnight boundaries.
 
 ## Milestone 1
 
@@ -13,25 +14,41 @@ This repository currently implements the first working slice:
 - onboarding with birth **year** only
 - local storage of that year
 - `AverageCmbJourneyCalculator` (constant CMB-relative speed)
-- live main screen: distance, days, seconds, minimal menu
+- live main screen: integer distance, days, seconds, human-scale subtitles
+- Cosmic Pulse (one shared timestamp per second, soft 320 ms transition)
+- optional Deep Space ambient loop, off by default
+- ENG/UA language switch that persists locally
 - animation pauses in the background and recalculates from wall-clock time on resume
 
-Menu destinations for widgets, styles, and Cosmic Pro are visible placeholders.
+Menu destinations:
+
+- next milestone + current speed
+- milestones (10M / 100M / 1B, plus a custom interval)
+- statistics
+- share (copy the live integers)
+- widgets (still Phase 3)
+- styles (Void, OLED, Midnight, Aurora)
+- atmosphere catalog
+- science
+- Cosmic Pro (unlocked in this build)
+- settings (optional month, day, time)
 
 ## Repository layout
 
 ```text
 ├── AGENTS.md
 ├── docs/
-│   ├── PRODUCT_OVERVIEW.md
-│   ├── PRODUCT_SPEC.md
-│   ├── ARCHITECTURE.md
-│   ├── SCIENCE_MODEL.md
-│   └── DEPLOYMENT.md
-└── app/                  Flutter project (iOS, Android, web)
+│   ├── README.md              index
+│   ├── MONETIZATION.md        ads + Pro subscription payouts
+│   ├── PHASE_2.md
+│   ├── PHASE_3.md
+│   ├── adr/                   decision history (do not delete)
+│   └── …specs and science
+└── app/                       Flutter project (iOS, Android, web)
 ```
 
-Read `AGENTS.md` and the files in `docs/` before changing behaviour.
+Read `AGENTS.md`, `docs/README.md`, and `docs/adr/README.md` before changing
+behaviour. How to get paid: [`docs/MONETIZATION.md`](docs/MONETIZATION.md).
 
 ## Run locally
 
@@ -68,11 +85,15 @@ Hosted URL after the first green deploy:
 
 https://koto-kot.github.io/cosmic-journey-app/
 
-The workflow tries to set Pages source to **GitHub Actions**. If the first
-deploy waits, approve the `github-pages` environment under
-**Settings → Environments**, and confirm **Settings → Pages → Source:
-GitHub Actions**. Details and store-release notes are in
-[`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+The workflow deploys with `actions/configure-pages` and `actions/deploy-pages`.
+It does **not** call the Pages create/update API: `GITHUB_TOKEN` cannot enable
+Pages (`Resource not accessible by integration`, HTTP 403). Set this once in
+the GitHub UI:
+
+1. **Settings → Pages → Source: GitHub Actions**
+2. Approve the `github-pages` environment under **Settings → Environments**
+
+Details and store-release notes are in [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 ## Science, in one line
 

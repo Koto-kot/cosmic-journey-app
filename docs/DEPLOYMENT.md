@@ -28,8 +28,12 @@ every change, a hosted web build only from the default branch.
 This does **not** run on Cursor's temporary git remote. It runs on GitHub
 `Koto-kot/cosmic-journey-app` (public).
 
-The deploy job posts `build_type=workflow` to the Pages API so source is
-**GitHub Actions** without clicking around Settings. If GitHub still asks:
+The deploy job uses `actions/configure-pages` and `actions/deploy-pages`.
+It does **not** create or update the Pages site through the REST API:
+`GITHUB_TOKEN` from Actions is not allowed to enable Pages
+(`Resource not accessible by integration`, HTTP 403).
+
+Set this once in the GitHub UI:
 
 1. **Settings → Pages → Source: GitHub Actions**
 2. Approve the `github-pages` environment under **Settings → Environments**
@@ -114,9 +118,10 @@ Practical combo for a small team:
 - Play Console registration: **US$25, one time**
   ([official help](https://support.google.com/googleplay/android-developer/answer/6112435)).
 - No annual Google fee after that.
-- If Cosmic Pro uses Play Billing later: Google takes **15%** on the first
-  US$1M/year digital goods in a calendar year, **30%** after that (consumer
-  app default). Physical goods do not apply here.
+- Cosmic Pro is a **Play Billing subscription** (ADR 0002). Google takes
+  **15%** on the first US$1M/year digital goods in a calendar year, **30%**
+  after that (consumer app default). Physical goods do not apply here.
+  Setup: [`MONETIZATION.md`](MONETIZATION.md).
 
 ### New personal accounts (after 13 Nov 2023)
 
@@ -180,9 +185,9 @@ if you already have a company.
 - Apple Developer **Enterprise** Program: **US$299 / year** — internal staff
   distribution only. **Not** for the public App Store. Skip it.
 - If the membership lapses, the app is removed from the store until you renew.
-- If Cosmic Pro uses In-App Purchase later: Apple takes **15%** under the
-  Small Business Program (under US$1M/year) or **30%** standard. One-time
-  IAP is allowed; subscriptions are not in the product spec.
+- Cosmic Pro is an App Store **auto-renewable subscription**. Apple takes
+  **15%** under the Small Business Program (under US$1M/year) or **30%**
+  standard. Product IDs and Restore: [`MONETIZATION.md`](MONETIZATION.md).
 
 You can install a debug build on your own iPhone with a **free** Apple ID
 (Personal Team), but that profile expires in 7 days and you cannot use
@@ -240,9 +245,13 @@ unless you drop iOS.
 ## What not to automate yet
 
 - Production store submit on every `main` push (review + signing risk)
-- Subscription billing (product is one-time Pro)
+- Live AdMob / StoreKit in `main` until Phase 3 sandbox QA passes
 - Analytics SDKs (AGENTS.md forbids them in MVP)
-- A backend (not required)
+- A backend (only if Phase 3.8 chooses Stripe / webhooks)
+
+Subscription **product setup** (not auto-submit) is documented in
+[`MONETIZATION.md`](MONETIZATION.md). The Phase 3 build plan is
+[`PHASE_3.md`](PHASE_3.md). Decision history: [`adr/`](adr/README.md).
 
 ## Checklist before the first store upload
 

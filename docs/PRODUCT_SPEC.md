@@ -152,7 +152,9 @@ Example:
 **You have travelled another 100,000,000 km.**
 
 ## 14. Cosmic Pro
-One-time purchase only.
+Auto-renewable **subscription** (yearly primary). See
+`docs/adr/0002-monetization-ads-and-pro-subscription.md` and
+`docs/MONETIZATION.md`. This supersedes the earlier one-time IAP rule.
 
 Potential entitlements:
 - premium themes;
@@ -164,9 +166,14 @@ Potential entitlements:
 - Scientific Mode;
 - multiple local profiles;
 - journey replay;
+- extra atmospheres;
 - ad removal.
 
-Implement Restore Purchases.
+Implement Restore Purchases on iOS and Android.
+
+The free app may show ads only via `AdSlot` on Menu, Science, Styles, and
+Statistics. No ads on the live journey screen, year wheel, share sheet, or
+launch interstitial.
 
 ## 15. Widgets
 Pro feature.

@@ -154,7 +154,10 @@ Do not auto-play loudly on first launch.
 
 ## 9. Expand soundscapes in Cosmic Pro
 
-Cosmic Pro remains a **one-time purchase**.
+Cosmic Pro was specified here as a **one-time purchase**. That rule is
+**superseded** by [ADR 0002](adr/0002-monetization-ads-and-pro-subscription.md)
+(yearly subscription). Keep this file as the Pulse request; do not treat this
+paragraph as current product law.
 
 Possible premium soundscape choices:
 

@@ -81,7 +81,7 @@ Includes:
 - offline operation.
 
 ## Cosmic Pro
-One-time purchase. No subscription.
+Yearly auto-renewable subscription (ADR 0002). Not a one-time unlock.
 
 Possible Pro features:
 - home-screen widgets;
@@ -98,11 +98,13 @@ Possible Pro features:
 - future visualisations.
 
 ## Advertising
-If ads are introduced:
-- never on main live screen;
-- avoid launch interstitials;
-- place only in secondary screens;
+Free iOS/Android builds may show banners via `AdSlot` only:
+- never on the main live screen;
+- never as launch interstitials;
+- only at the bottom of Menu, Science, Styles, Statistics;
 - Pro removes ads.
+
+How payouts work: `docs/MONETIZATION.md`. GitHub Pages web preview has no ads.
 
 ## Milestones
 Possible presets:

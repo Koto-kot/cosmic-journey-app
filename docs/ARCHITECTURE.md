@@ -27,11 +27,15 @@ Local notifications through a maintained Flutter plugin.
 
 ### Purchases
 A maintained Flutter-compatible abstraction for:
-- Apple StoreKit;
-- Google Play Billing.
+- Apple StoreKit 2 (auto-renewable Cosmic Pro yearly);
+- Google Play Billing subscriptions.
+
+Screens read `Entitlement` only. Store SDKs stay in `services/purchases/`.
+See `docs/adr/0002-monetization-ads-and-pro-subscription.md`.
 
 ### Ads
-Optional future layer, isolated from journey logic.
+Optional layer, isolated from journey logic. Only `AdSlot` may load an ads
+SDK (AdMob on iOS/Android). Never on the live journey screen.
 
 ## Suggested folders
 
@@ -145,8 +149,20 @@ Dedicated formatters for:
 - kilometres;
 - days;
 - seconds;
-- compact billions/trillions;
+- compact billions/trillions as full words (`billion` / `млрд`);
 - locale decimals.
+
+Cosmic Pulse reads integers only on the main screen (`formatFullNumber`) and
+shows a secondary `formatHumanScale` line. Live interpolation between frames
+is not used on the default journey screen.
+
+## Audio
+Ambient sound is a separate service from Cosmic Pulse.
+
+- free catalog currently contains one original loop, Deep Space
+- preference is off by default and persisted locally
+- Pro soundscape ids can be added to the catalog later without changing the live screen
+- the pulse must never emit an audible one-second tick
 
 ## Notifications
 Milestones should be scheduled from derived thresholds, not background counting.

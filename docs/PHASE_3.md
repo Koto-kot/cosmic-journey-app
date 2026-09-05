@@ -78,8 +78,7 @@ on real phones. Web Pages still deploys from `main`.
 - Play Billing base plan `cosmic_pro_yearly`.
 - Banking/tax on both stores (otherwise you will not be paid).
 - Flutter: `in_app_purchase` **or** RevenueCat, isolated in
-  `services/purchases/`.
-  Screens still only read `Entitlement`.
+  `services/purchases/`. Screens still only read `Entitlement`.
 - Map active / grace / billing-retry → `isPro`. Expired → `isPro false`.
 - Restore Purchases on the Cosmic Pro screen (replace the snackbar).
 - Sandbox / license testers: subscribe, expire, restore, family of devices.
@@ -200,12 +199,12 @@ Pro screen (“Subscribe on iOS/Android” vs a real Checkout button).
 3.7 Profiles / replay        ─┼─ can overlap; no store account needed
 3.1 Store listings/signing   ─┘
         │
-        ├▶ 3.2 Subscription + Restore
-        ├▶ 3.3 AdMob in AdSlot
-        ├▶ 3.4 Widgets
-        └▶ 3.6 Notifications
+        ├─► 3.2 Subscription + Restore
+        ├─► 3.3 AdMob in AdSlot
+        ├─► 3.4 Widgets
+        └─► 3.6 Notifications
                 │
-                └▶ 3.8 Web money ADR (only if you will charge on web)
+                └─► 3.8 Web money ADR (only if you will charge on web)
 ```
 
 Do not flip `Entitlement.testing` off in `main` until 3.2 and 3.3 are
@@ -233,6 +232,10 @@ Phase 3 is done when:
 ---
 
 ## Out of scope (later than Phase 3)
+
+Product ideas that might follow Phase 3 (sky of the first day, extra
+stats, replay, astrology-as-map) live in [IDEAS.md](IDEAS.md). They are
+not committed work.
 
 - Accounts, email, cloud sync of birth dates.
 - GPS / Health permissions.

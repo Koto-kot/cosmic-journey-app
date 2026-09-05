@@ -35,7 +35,8 @@ class AtmosphereScreen extends StatelessWidget {
               Slider(
                 value: dependencies.ambientAudio.volume,
                 activeColor: CosmicTokens.accent,
-                onChanged: (value) => dependencies.ambientAudio.setVolume(value),
+                onChanged: (value) =>
+                    dependencies.ambientAudio.setVolume(value),
               ),
               const SizedBox(height: 8),
               for (final soundscape in SoundscapeCatalog.all) ...[

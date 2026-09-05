@@ -39,9 +39,7 @@ class SettingsScreen extends StatelessWidget {
                       icon: const Icon(Icons.arrow_back_ios_new, size: 18),
                     ),
                     const Spacer(),
-                    LanguageSwitcher(
-                      controller: dependencies.localeController,
-                    ),
+                    LanguageSwitcher(controller: dependencies.localeController),
                   ],
                 ),
                 Padding(
@@ -211,10 +209,7 @@ class _TimeCoordinatesToggle extends StatelessWidget {
             onTap: () => controller.setEnabled(!enabled),
             borderRadius: BorderRadius.circular(14),
             child: Ink(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 14,
-                vertical: 8,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(color: CosmicTokens.cardStroke),

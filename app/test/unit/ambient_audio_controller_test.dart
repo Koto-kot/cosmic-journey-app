@@ -38,16 +38,19 @@ void main() {
     expect(SoundscapeCatalog.all, hasLength(13));
   });
 
-  test('volume defaults into the recommended ambient range and persists', () async {
-    final store = InMemoryAudioPreferenceStore();
-    final audio = SilentAmbientAudioController(store: store);
-    expect(audio.volume, inInclusiveRange(0.15, 0.25));
-    expect(await store.loadVolume(), audio.volume);
+  test(
+    'volume defaults into the recommended ambient range and persists',
+    () async {
+      final store = InMemoryAudioPreferenceStore();
+      final audio = SilentAmbientAudioController(store: store);
+      expect(audio.volume, inInclusiveRange(0.15, 0.25));
+      expect(await store.loadVolume(), audio.volume);
 
-    await audio.setVolume(0.42);
-    expect(audio.volume, 0.42);
-    expect(await store.loadVolume(), 0.42);
-  });
+      await audio.setVolume(0.42);
+      expect(audio.volume, 0.42);
+      expect(await store.loadVolume(), 0.42);
+    },
+  );
 
   test('volume is clamped to 0..1', () async {
     final audio = SilentAmbientAudioController();

@@ -190,8 +190,7 @@ class _JourneyScreenState extends State<JourneyScreen>
                                 : pulseGlow(_pulse.value)),
                       reducedMotion: _controller.reducedMotion,
                       showTimeCoordinates:
-                          widget.dependencies.timeCoordinatesController
-                              .enabled,
+                          widget.dependencies.timeCoordinatesController.enabled,
                       profile: widget.profile,
                       clock: widget.dependencies.clock,
                     );

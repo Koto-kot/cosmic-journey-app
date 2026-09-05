@@ -36,19 +36,22 @@ void main() {
     );
   });
 
-  test('date known but time unknown shows the date with a time-unknown tag', () {
-    final profile = profileWith(month: 4, day: 1);
-    expect(profile.hasDate, isTrue);
-    expect(profile.hasTime, isFalse);
-    final expectedDate = JourneyDateFormatter.date(
-      profile.canonicalBirthUtc,
-      locale,
-    );
-    expect(
-      JourneyStartPrecision.subtitle(profile, en, locale),
-      '$expectedDate · time unknown',
-    );
-  });
+  test(
+    'date known but time unknown shows the date with a time-unknown tag',
+    () {
+      final profile = profileWith(month: 4, day: 1);
+      expect(profile.hasDate, isTrue);
+      expect(profile.hasTime, isFalse);
+      final expectedDate = JourneyDateFormatter.date(
+        profile.canonicalBirthUtc,
+        locale,
+      );
+      expect(
+        JourneyStartPrecision.subtitle(profile, en, locale),
+        '$expectedDate · time unknown',
+      );
+    },
+  );
 
   test('exact date and time render as date and time, not a bare year', () {
     final profile = profileWith(month: 4, day: 1, hour: 8, minute: 45);

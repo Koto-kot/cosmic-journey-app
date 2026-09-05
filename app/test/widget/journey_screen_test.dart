@@ -210,35 +210,34 @@ void main() {
     },
   );
 
-  testWidgets(
-    'time coordinates are hidden by default and shown when enabled',
-    (tester) async {
-      final coordinates = TimeCoordinatesController(
-        store: InMemoryTimeCoordinatesPreferenceStore(),
-      );
-      await tester.pumpWidget(
-        _wrap(
-          JourneyScreen(
-            dependencies: testDependencies(
-              clock: clock,
-              ambientAudio: audio,
-              timeCoordinatesController: coordinates,
-            ),
-            profile: profile,
+  testWidgets('time coordinates are hidden by default and shown when enabled', (
+    tester,
+  ) async {
+    final coordinates = TimeCoordinatesController(
+      store: InMemoryTimeCoordinatesPreferenceStore(),
+    );
+    await tester.pumpWidget(
+      _wrap(
+        JourneyScreen(
+          dependencies: testDependencies(
+            clock: clock,
+            ambientAudio: audio,
+            timeCoordinatesController: coordinates,
           ),
+          profile: profile,
         ),
-      );
-      await tester.pump();
-      expect(find.text('START'), findsNothing);
-      expect(find.text('NOW'), findsNothing);
+      ),
+    );
+    await tester.pump();
+    expect(find.text('START'), findsNothing);
+    expect(find.text('NOW'), findsNothing);
 
-      await coordinates.setEnabled(true);
-      await tester.pump();
-      expect(find.text('START'), findsOneWidget);
-      expect(find.text('NOW'), findsOneWidget);
-      expect(find.text('2000 · approximate'), findsOneWidget);
-    },
-  );
+    await coordinates.setEnabled(true);
+    await tester.pump();
+    expect(find.text('START'), findsOneWidget);
+    expect(find.text('NOW'), findsOneWidget);
+    expect(find.text('2000 · approximate'), findsOneWidget);
+  });
 }
 
 Widget _wrap(

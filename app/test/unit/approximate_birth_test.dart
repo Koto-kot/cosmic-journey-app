@@ -61,6 +61,19 @@ void main() {
     },
   );
 
+  test('a full local date converts to UTC and is never in the future', () {
+    final utc = ApproximateBirth.resolve(
+      year: 1991,
+      month: 8,
+      day: 24,
+      hour: 6,
+      minute: 30,
+      localOffset: const Duration(hours: 3),
+      nowUtc: DateTime.utc(2026, 9, 5),
+    );
+    expect(utc, DateTime.utc(1991, 8, 24, 3, 30));
+  });
+
   test('supported years are 1900 through the current year', () {
     expect(ApproximateBirth.isSupportedYear(1899, 2026), isFalse);
     expect(ApproximateBirth.isSupportedYear(1900, 2026), isTrue);

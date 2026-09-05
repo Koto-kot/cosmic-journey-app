@@ -36,7 +36,7 @@ class ComingSoonScreen extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
                 child: Text(
                   body,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: CosmicTokens.muted,
                     height: 1.45,
                     fontSize: 15,

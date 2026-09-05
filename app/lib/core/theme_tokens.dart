@@ -1,16 +1,29 @@
 import 'package:flutter/material.dart';
 
-/// Shared visual tokens. Free and Pro themes should keep the same layout.
+import 'theme/cosmic_palette.dart';
+
+/// Shared visual tokens. Free and Pro themes keep the same layout.
+///
+/// Colours come from the active [CosmicPalette]. Apply a palette from
+/// [ThemeController] before rebuilding the tree.
 abstract final class CosmicTokens {
-  static const Color background = Color(0xFF000000);
-  static const Color nebula = Color(0xFF07101C);
-  static const Color surface = Color(0xFF0A0A0F);
-  static const Color card = Color(0xFF0B0B10);
-  static const Color onBackground = Color(0xFFFFFFFF);
-  static const Color muted = Color(0xFFA0A0A0);
-  static const Color accent = Color(0xFF4FACFE);
-  static const Color hairline = Color(0x22FFFFFF);
-  static const Color cardStroke = Color(0x1AFFFFFF);
+  static CosmicPalette _palette = CosmicPaletteCatalog.voidBlack;
+
+  static CosmicPalette get palette => _palette;
+
+  static void apply(CosmicPalette next) {
+    _palette = next;
+  }
+
+  static Color get background => _palette.background;
+  static Color get nebula => _palette.nebula;
+  static Color get surface => _palette.surface;
+  static Color get card => _palette.card;
+  static Color get onBackground => _palette.onBackground;
+  static Color get muted => _palette.muted;
+  static Color get accent => _palette.accent;
+  static Color get hairline => _palette.hairline;
+  static Color get cardStroke => _palette.cardStroke;
 
   static const double pagePadding = 24;
   static const double numberGap = 28;

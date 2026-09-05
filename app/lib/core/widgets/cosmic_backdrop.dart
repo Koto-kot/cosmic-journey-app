@@ -14,10 +14,10 @@ class CosmicBackdrop extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        const ColoredBox(color: CosmicTokens.background),
-        const CustomPaint(
-          painter: StarfieldPainter(),
-          child: SizedBox.expand(),
+        ColoredBox(color: CosmicTokens.background),
+        CustomPaint(
+          painter: StarfieldPainter(paletteId: CosmicTokens.palette.id),
+          child: const SizedBox.expand(),
         ),
         child,
       ],
@@ -26,7 +26,9 @@ class CosmicBackdrop extends StatelessWidget {
 }
 
 class StarfieldPainter extends CustomPainter {
-  const StarfieldPainter();
+  const StarfieldPainter({this.paletteId = 'void'});
+
+  final String paletteId;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -55,5 +57,6 @@ class StarfieldPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant StarfieldPainter oldDelegate) =>
+      oldDelegate.paletteId != paletteId;
 }

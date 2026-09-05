@@ -6,7 +6,7 @@ ThemeData buildCosmicTheme() {
   final base = ThemeData(brightness: Brightness.dark, useMaterial3: true);
   return base.copyWith(
     scaffoldBackgroundColor: CosmicTokens.background,
-    colorScheme: const ColorScheme.dark(
+    colorScheme: ColorScheme.dark(
       surface: CosmicTokens.surface,
       onSurface: CosmicTokens.onBackground,
       primary: CosmicTokens.accent,
@@ -16,7 +16,7 @@ ThemeData buildCosmicTheme() {
       bodyColor: CosmicTokens.onBackground,
       displayColor: CosmicTokens.onBackground,
     ),
-    iconButtonTheme: const IconButtonThemeData(
+    iconButtonTheme: IconButtonThemeData(
       style: ButtonStyle(
         foregroundColor: WidgetStatePropertyAll(CosmicTokens.onBackground),
       ),

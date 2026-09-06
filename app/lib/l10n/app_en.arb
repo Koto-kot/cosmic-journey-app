@@ -89,7 +89,7 @@
   "birthPrecisionHint": "Year only uses 1 July at noon, local time. Add a date and time for a more precise odometer.",
   "monthNotSet": "Year only",
   "dayNotSet": "Not set",
-  "timeNotSet": "Noon",
+  "timeNotSet": "Not set",
   "clearOptional": "Clear",
   "proUnlockedTitle": "You have Cosmic Pro",
   "proUnlockedBody": "Every Cosmic Pro surface is unlocked in this testing build. On the store, Cosmic Pro will be a yearly subscription. Restore Purchases will connect to Apple and Google in Phase 3.",

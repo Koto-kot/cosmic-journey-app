@@ -16,7 +16,11 @@ void main() {
       bytes.length - 2,
       Endian.little,
     );
-    expect(first.abs(), lessThan(400));
-    expect(last.abs(), lessThan(400));
+    // Loop is peak-normalized (DeepSpaceLoop.targetPeak), so the seamless-
+    // loop tolerance scales with that peak instead of a fixed sample count
+    // tied to one specific (now-retuned) gain.
+    final peakSample = DeepSpaceLoop.targetPeak * 32767;
+    expect(first.abs(), lessThan(peakSample * 0.05));
+    expect(last.abs(), lessThan(peakSample * 0.05));
   });
 }

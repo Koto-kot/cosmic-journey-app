@@ -242,7 +242,7 @@ abstract final class ProSoundscapes {
   }) {
     const sampleRate = DeepSpaceLoop.sampleRate;
     const frames = sampleRate * DeepSpaceLoop.durationSeconds;
-    final pcm = Int16List(frames);
+    final samples = Float64List(frames);
     const twoPi = math.pi * 2;
     for (var i = 0; i < frames; i++) {
       final t = i / sampleRate;
@@ -255,8 +255,10 @@ abstract final class ProSoundscapes {
         sample += amp * voice * (p == partials.length - 1 ? shimmer : 1);
       }
       sample *= breath * gain;
-      pcm[i] = (sample.clamp(-1.0, 1.0) * 32767).round();
+      samples[i] = sample;
     }
-    return DeepSpaceLoop.wrapWav(pcm);
+    // Peak-normalized (see DeepSpaceLoop.normalizePeak) so `gain` only
+    // shapes each preset's relative timbre, not how loud it ends up.
+    return DeepSpaceLoop.wrapWav(DeepSpaceLoop.normalizePeak(samples));
   }
 }

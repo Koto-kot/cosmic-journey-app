@@ -189,7 +189,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dayNotSet => 'Not set';
 
   @override
-  String get timeNotSet => 'Noon';
+  String get timeNotSet => 'Not set';
 
   @override
   String get clearOptional => 'Clear';

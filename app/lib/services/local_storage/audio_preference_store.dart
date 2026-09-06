@@ -1,8 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Default ambient bed volume. Kept low/ambient per the Codex audio spec
-/// (recommended range 0.15-0.25).
-const double defaultAmbientVolume = 0.2;
+/// Default ambient bed volume. The Codex audio spec originally recommended
+/// 0.15-0.25, but combined with each soundscape's own (previously
+/// unnormalized) internal gain, that read as inaudible/"not playing" for
+/// most presets — see DeepSpaceLoop.normalizePeak. Raised so the default is
+/// clearly audible now that every soundscape peaks at a consistent level.
+const double defaultAmbientVolume = 0.45;
 
 abstract class AudioPreferenceStore {
   Future<bool> loadEnabled();

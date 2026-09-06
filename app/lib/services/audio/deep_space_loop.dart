@@ -9,9 +9,14 @@ abstract final class DeepSpaceLoop {
   static const int sampleRate = 22050;
   static const int durationSeconds = 16;
 
+  /// Every soundscape normalizes to this peak (of full scale) so switching
+  /// between them never lands on one that's inaudibly quiet — see
+  /// [normalizePeak].
+  static const double targetPeak = 0.92;
+
   static Uint8List build() {
     const frames = sampleRate * durationSeconds;
-    final pcm = Int16List(frames);
+    final samples = Float64List(frames);
     const twoPi = math.pi * 2;
     for (var i = 0; i < frames; i++) {
       final t = i / sampleRate;
@@ -25,9 +30,34 @@ abstract final class DeepSpaceLoop {
       sample += 0.04 * math.sin(twoPi * 165 * t) * shimmer;
       sample += 0.025 * math.sin(twoPi * 27.5 * t);
       sample *= breath * 0.38;
-      pcm[i] = (sample.clamp(-1.0, 1.0) * 32767).round();
+      samples[i] = sample;
     }
-    return wrapWav(pcm);
+    return wrapWav(normalizePeak(samples));
+  }
+
+  /// Rescales `samples` so their peak absolute value hits [targetPeak] of
+  /// full scale, then quantizes to 16-bit PCM. Each soundscape's `gain` and
+  /// partial-amplitude constants (in [ProSoundscapes]) only shape relative
+  /// timbre now, not overall loudness — before this, presets like
+  /// `quietStation`/`deepSilence` peaked around 8x quieter than
+  /// `orbitalDrift`, which read as "doesn't play" rather than "quiet".
+  static Int16List normalizePeak(
+    Float64List samples, {
+    double target = targetPeak,
+  }) {
+    var peak = 0.0;
+    for (final sample in samples) {
+      final magnitude = sample.abs();
+      if (magnitude > peak) {
+        peak = magnitude;
+      }
+    }
+    final scale = peak > 0 ? target / peak : 1.0;
+    final pcm = Int16List(samples.length);
+    for (var i = 0; i < samples.length; i++) {
+      pcm[i] = ((samples[i] * scale).clamp(-1.0, 1.0) * 32767).round();
+    }
+    return pcm;
   }
 
   static Uint8List wrapWav(Int16List pcm) {

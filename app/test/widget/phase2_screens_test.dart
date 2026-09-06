@@ -48,6 +48,39 @@ void main() {
   });
 
   testWidgets(
+    'Month and Day are plain rows that open a picker, not a dropdown menu',
+    (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('en'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: JourneyStartScreen(
+            dependencies: testDependencies(),
+            profile: profile,
+          ),
+        ),
+      );
+      expect(find.byType(DropdownButtonFormField<int>), findsNothing);
+      expect(find.text('Year only'), findsOneWidget);
+
+      await tester.tap(find.text('Year only'));
+      await tester.pumpAndSettle();
+      expect(find.text('January'), findsOneWidget);
+      await tester.tap(find.text('January'));
+      await tester.pumpAndSettle();
+      expect(find.text('January'), findsOneWidget);
+      expect(find.text('Year only'), findsNothing);
+
+      await tester.tap(find.text('Not set').first);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('2'));
+      await tester.pumpAndSettle();
+      expect(find.text('2'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
     'Settings offers counter motion and time-coordinates toggle, no birth fields',
     (tester) async {
       await tester.pumpWidget(

@@ -122,6 +122,134 @@ class _JourneyStartScreenState extends State<JourneyStartScreen> {
         .format(DateTime(2000, month));
   }
 
+  // Bottom-sheet row lists return this instead of null on tap, so a picker
+  // dismissed via the back gesture/scrim (which resolves the future with
+  // null) can be told apart from the user explicitly choosing "not set".
+  static const _notSet = -1;
+
+  Future<void> _pickMonth() async {
+    final l10n = AppLocalizations.of(context);
+    final picked = await _showRowPicker(
+      title: l10n.birthMonthLabel,
+      selected: _month ?? _notSet,
+      options: [
+        (_notSet, l10n.monthNotSet),
+        for (var month = 1; month <= 12; month++)
+          (month, _monthLabel(context, month)),
+      ],
+    );
+    if (picked == null) {
+      return;
+    }
+    final month = picked == _notSet ? null : picked;
+    setState(() {
+      _month = month;
+      if (month == null) {
+        _day = null;
+        _time = null;
+      } else if (_day != null && _day! > _daysInSelectedMonth) {
+        _day = _daysInSelectedMonth;
+      }
+    });
+  }
+
+  Future<void> _pickDay() async {
+    if (_month == null) {
+      return;
+    }
+    final l10n = AppLocalizations.of(context);
+    final picked = await _showRowPicker(
+      title: l10n.birthDayLabel,
+      selected: _day ?? _notSet,
+      options: [
+        (_notSet, l10n.dayNotSet),
+        for (var day = 1; day <= _daysInSelectedMonth; day++) (day, '$day'),
+      ],
+    );
+    if (picked == null) {
+      return;
+    }
+    setState(() => _day = picked == _notSet ? null : picked);
+  }
+
+  Future<void> _pickTime() async {
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: _time ?? const TimeOfDay(hour: 12, minute: 0),
+    );
+    if (picked != null) {
+      setState(() => _time = picked);
+    }
+  }
+
+  Future<int?> _showRowPicker({
+    required String title,
+    required int selected,
+    required List<(int, String)> options,
+  }) {
+    return showModalBottomSheet<int>(
+      context: context,
+      backgroundColor: CosmicTokens.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (sheetContext) {
+        return SafeArea(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.sizeOf(sheetContext).height * 0.6,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: options.length,
+                    itemBuilder: (context, index) {
+                      final (value, text) = options[index];
+                      final isSelected = value == selected;
+                      return ListTile(
+                        title: Text(
+                          text,
+                          style: TextStyle(
+                            color: isSelected
+                                ? CosmicTokens.accent
+                                : CosmicTokens.onBackground,
+                            fontWeight: isSelected
+                                ? FontWeight.w600
+                                : FontWeight.w400,
+                          ),
+                        ),
+                        trailing: isSelected
+                            ? Icon(Icons.check, color: CosmicTokens.accent)
+                            : null,
+                        onTap: () => Navigator.of(sheetContext).pop(value),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -197,82 +325,46 @@ class _JourneyStartScreenState extends State<JourneyStartScreen> {
             Expanded(
               child: ListView(
                 children: [
-                  _OptionalDropdown<int>(
+                  _BirthFieldRow(
                     label: l10n.birthMonthLabel,
-                    value: _month,
-                    unsetLabel: l10n.monthNotSet,
-                    items: [
-                      for (var month = 1; month <= 12; month++)
-                        (month, _monthLabel(context, month)),
-                    ],
-                    onChanged: (month) {
-                      setState(() {
-                        _month = month;
-                        if (month == null) {
-                          _day = null;
-                          _time = null;
-                        } else if (_day != null &&
-                            _day! > _daysInSelectedMonth) {
-                          _day = _daysInSelectedMonth;
-                        }
-                      });
-                    },
+                    valueText: _month == null
+                        ? l10n.monthNotSet
+                        : _monthLabel(context, _month!),
+                    isSet: _month != null,
+                    onTap: _pickMonth,
+                    onClear: _month == null
+                        ? null
+                        : () => setState(() {
+                            _month = null;
+                            _day = null;
+                            _time = null;
+                          }),
                   ),
                   const SizedBox(height: 12),
-                  _OptionalDropdown<int>(
+                  _BirthFieldRow(
                     label: l10n.birthDayLabel,
-                    value: _month == null ? null : _day,
-                    unsetLabel: l10n.dayNotSet,
+                    valueText: _month == null
+                        ? l10n.dayNotSet
+                        : (_day == null ? l10n.dayNotSet : '$_day'),
+                    isSet: _month != null && _day != null,
                     enabled: _month != null,
-                    items: [
-                      for (var day = 1; day <= _daysInSelectedMonth; day++)
-                        (day, '$day'),
-                    ],
-                    onChanged: (day) => setState(() => _day = day),
+                    onTap: _pickDay,
+                    onClear: _day == null
+                        ? null
+                        : () => setState(() => _day = null),
                   ),
                   const SizedBox(height: 12),
-                  Text(
-                    l10n.birthTimeLabel,
-                    style: TextStyle(
-                      color: CosmicTokens.muted,
-                      letterSpacing: 1.4,
-                      fontSize: 12,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: OutlinedButton(
-                          onPressed: _month == null
-                              ? null
-                              : () async {
-                                  final picked = await showTimePicker(
-                                    context: context,
-                                    initialTime:
-                                        _time ??
-                                        const TimeOfDay(hour: 12, minute: 0),
-                                  );
-                                  if (picked != null) {
-                                    setState(() => _time = picked);
-                                  }
-                                },
-                          child: Text(
-                            _time == null
-                                ? l10n.timeNotSet
-                                : _time!.format(context),
-                          ),
-                        ),
-                      ),
-                      if (_time != null) ...[
-                        const SizedBox(width: 8),
-                        IconButton(
-                          tooltip: l10n.clearOptional,
-                          onPressed: () => setState(() => _time = null),
-                          icon: const Icon(Icons.close, size: 18),
-                        ),
-                      ],
-                    ],
+                  _BirthFieldRow(
+                    label: l10n.birthTimeLabel,
+                    valueText: _time == null
+                        ? l10n.timeNotSet
+                        : _time!.format(context),
+                    isSet: _time != null,
+                    enabled: _month != null,
+                    onTap: _pickTime,
+                    onClear: _time == null
+                        ? null
+                        : () => setState(() => _time = null),
                   ),
                 ],
               ),
@@ -298,22 +390,27 @@ class _JourneyStartScreenState extends State<JourneyStartScreen> {
   }
 }
 
-class _OptionalDropdown<T> extends StatelessWidget {
-  const _OptionalDropdown({
+/// A single tappable row for an optional birth field (month/day/time):
+/// label above, current value (or its "not set" placeholder) with a
+/// chevron below, opening a picker on tap — replaces the old
+/// `DropdownButtonFormField`, whose floating overlay menu read as broken
+/// on narrow/web layouts.
+class _BirthFieldRow extends StatelessWidget {
+  const _BirthFieldRow({
     required this.label,
-    required this.value,
-    required this.unsetLabel,
-    required this.items,
-    required this.onChanged,
+    required this.valueText,
+    required this.isSet,
+    required this.onTap,
+    this.onClear,
     this.enabled = true,
   });
 
   final String label;
-  final T? value;
-  final String unsetLabel;
-  final List<(T, String)> items;
-  final ValueChanged<T?> onChanged;
+  final String valueText;
+  final bool isSet;
   final bool enabled;
+  final VoidCallback? onTap;
+  final VoidCallback? onClear;
 
   @override
   Widget build(BuildContext context) {
@@ -329,30 +426,56 @@ class _OptionalDropdown<T> extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        DropdownButtonFormField<T>(
-          // ignore: deprecated_member_use
-          value: enabled ? value : null,
-          isExpanded: true,
-          dropdownColor: CosmicTokens.surface,
-          decoration: InputDecoration(
-            enabled: enabled,
-            filled: true,
-            fillColor: CosmicTokens.card,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: CosmicTokens.cardStroke),
+        Row(
+          children: [
+            Expanded(
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: enabled ? onTap : null,
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                    decoration: BoxDecoration(
+                      color: CosmicTokens.card,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: CosmicTokens.cardStroke),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            valueText,
+                            style: TextStyle(
+                              color: !enabled || !isSet
+                                  ? CosmicTokens.muted
+                                  : CosmicTokens.onBackground,
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          Icons.chevron_right,
+                          color: CosmicTokens.muted,
+                          size: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: CosmicTokens.cardStroke),
-            ),
-          ),
-          items: [
-            DropdownMenuItem<T>(value: null, child: Text(unsetLabel)),
-            for (final item in items)
-              DropdownMenuItem<T>(value: item.$1, child: Text(item.$2)),
+            if (onClear != null) ...[
+              const SizedBox(width: 8),
+              IconButton(
+                tooltip: AppLocalizations.of(context).clearOptional,
+                onPressed: onClear,
+                icon: const Icon(Icons.close, size: 18),
+              ),
+            ],
           ],
-          onChanged: enabled ? onChanged : null,
         ),
       ],
     );

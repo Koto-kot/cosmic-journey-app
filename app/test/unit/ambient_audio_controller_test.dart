@@ -43,7 +43,7 @@ void main() {
     () async {
       final store = InMemoryAudioPreferenceStore();
       final audio = SilentAmbientAudioController(store: store);
-      expect(audio.volume, inInclusiveRange(0.15, 0.25));
+      expect(audio.volume, inInclusiveRange(0.35, 0.55));
       expect(await store.loadVolume(), audio.volume);
 
       await audio.setVolume(0.42);

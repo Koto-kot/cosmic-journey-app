@@ -188,7 +188,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get dayNotSet => 'Не задано';
 
   @override
-  String get timeNotSet => 'Опівдні';
+  String get timeNotSet => 'Не задано';
 
   @override
   String get clearOptional => 'Скинути';

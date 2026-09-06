@@ -419,7 +419,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeNotSet.
   ///
   /// In en, this message translates to:
-  /// **'Noon'**
+  /// **'Not set'**
   String get timeNotSet;
 
   /// No description provided for @clearOptional.

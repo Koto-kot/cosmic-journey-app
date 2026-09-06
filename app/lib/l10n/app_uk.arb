@@ -89,7 +89,7 @@
   "birthPrecisionHint": "Якщо відомий лише рік, відлік іде від 1 липня опівдні за місцевим часом. Дата і час роблять одометр точнішим.",
   "monthNotSet": "Лише рік",
   "dayNotSet": "Не задано",
-  "timeNotSet": "Опівдні",
+  "timeNotSet": "Не задано",
   "clearOptional": "Скинути",
   "proUnlockedTitle": "У тебе Cosmic Pro",
   "proUnlockedBody": "У цій тестовій збірці всі поверхні Cosmic Pro відкриті. У магазині Cosmic Pro буде річною підпискою. Restore Purchases підключить Apple і Google у Phase 3.",

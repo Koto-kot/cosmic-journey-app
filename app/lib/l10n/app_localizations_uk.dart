@@ -31,6 +31,12 @@ class AppLocalizationsUk extends AppLocalizations {
   String get secondsLabel => 'секунд';
 
   @override
+  String get hoursLabel => 'год';
+
+  @override
+  String get minutesLabel => 'хв';
+
+  @override
   String get kmLabel => 'km';
 
   @override
@@ -395,4 +401,48 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get atmosphereVolumeLabel => 'Гучність';
+
+  @override
+  String get shuttleDistanceLabel => 'ВІДСТАНЬ';
+
+  @override
+  String get shuttleFlightTimeLabel => 'ЧАС ПОЛЬОТУ';
+
+  @override
+  String get shuttleNavLockLabel => 'NAV LOCK';
+
+  @override
+  String get shuttleCmbRefLabel => 'CMB REF';
+
+  @override
+  String get shuttleFlightActiveLabel => 'ПОЛІТ АКТИВНИЙ';
+
+  @override
+  String get shuttleAudioLabel => 'AUDIO';
+
+  @override
+  String get shuttleTimeLabel => 'ЧАС';
+
+  @override
+  String get shuttleModeLabel => 'РЕЖИМ';
+
+  @override
+  String get interfaceStyleSectionLabel => 'СТИЛЬ ІНТЕРФЕЙСУ';
+
+  @override
+  String get colorPaletteSectionLabel => 'КОЛЬОРОВА ПАЛІТРА';
+
+  @override
+  String get interfaceCosmicMinimalTitle => 'Cosmic Minimal';
+
+  @override
+  String get interfaceCosmicMinimalSubtitle =>
+      'Вигляд Землі з трьома лічильниками';
+
+  @override
+  String get interfaceShuttleCockpitTitle => 'Shuttle Cockpit';
+
+  @override
+  String get interfaceShuttleCockpitSubtitle =>
+      'Вигляд з капітанського крісла з двома табло';
 }

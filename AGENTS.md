@@ -68,7 +68,8 @@ Store locally:
 - locale/preferences;
 - ambient audio on/off, soundscape id, and volume;
 - readout mode (Pulse/Continuous);
-- whether the optional time-coordinates block is shown.
+- whether the optional time-coordinates block is shown;
+- interface style (Cosmic Minimal/Shuttle Cockpit) — independent of theme/color palette (ADR 0010).
 
 ## Time handling
 Use UTC internally.

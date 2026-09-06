@@ -1,4 +1,5 @@
 import 'package:cosmic_journey/app/app_dependencies.dart';
+import 'package:cosmic_journey/app/journey_style_controller.dart';
 import 'package:cosmic_journey/app/locale_controller.dart';
 import 'package:cosmic_journey/app/readout_mode_controller.dart';
 import 'package:cosmic_journey/app/theme_controller.dart';
@@ -7,6 +8,7 @@ import 'package:cosmic_journey/core/clock.dart';
 import 'package:cosmic_journey/core/entitlement/entitlement.dart';
 import 'package:cosmic_journey/services/audio/ambient_audio_controller.dart';
 import 'package:cosmic_journey/services/journey_calculator/average_cmb_journey_calculator.dart';
+import 'package:cosmic_journey/services/local_storage/journey_style_store.dart';
 import 'package:cosmic_journey/services/local_storage/locale_store.dart';
 import 'package:cosmic_journey/services/local_storage/milestone_preference_store.dart';
 import 'package:cosmic_journey/services/local_storage/profile_store.dart';
@@ -24,6 +26,7 @@ AppDependencies testDependencies({
   Entitlement? entitlement,
   MilestonePreferenceStore? milestoneStore,
   TimeCoordinatesController? timeCoordinatesController,
+  JourneyStyleController? journeyStyleController,
 }) {
   return AppDependencies(
     clock: clock ?? FakeClock(DateTime.utc(2000, 1, 2)),
@@ -45,5 +48,8 @@ AppDependencies testDependencies({
         TimeCoordinatesController(
           store: InMemoryTimeCoordinatesPreferenceStore(),
         ),
+    journeyStyleController:
+        journeyStyleController ??
+        JourneyStyleController(store: InMemoryJourneyStyleStore()),
   );
 }

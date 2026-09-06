@@ -31,6 +31,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get secondsLabel => 'seconds';
 
   @override
+  String get hoursLabel => 'hrs';
+
+  @override
+  String get minutesLabel => 'min';
+
+  @override
   String get kmLabel => 'km';
 
   @override
@@ -396,4 +402,47 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get atmosphereVolumeLabel => 'Volume';
+
+  @override
+  String get shuttleDistanceLabel => 'DISTANCE';
+
+  @override
+  String get shuttleFlightTimeLabel => 'FLIGHT TIME';
+
+  @override
+  String get shuttleNavLockLabel => 'NAV LOCK';
+
+  @override
+  String get shuttleCmbRefLabel => 'CMB REF';
+
+  @override
+  String get shuttleFlightActiveLabel => 'FLIGHT ACTIVE';
+
+  @override
+  String get shuttleAudioLabel => 'AUDIO';
+
+  @override
+  String get shuttleTimeLabel => 'TIME';
+
+  @override
+  String get shuttleModeLabel => 'MODE';
+
+  @override
+  String get interfaceStyleSectionLabel => 'INTERFACE STYLE';
+
+  @override
+  String get colorPaletteSectionLabel => 'COLOR PALETTE';
+
+  @override
+  String get interfaceCosmicMinimalTitle => 'Cosmic Minimal';
+
+  @override
+  String get interfaceCosmicMinimalSubtitle => 'Earth view with three counters';
+
+  @override
+  String get interfaceShuttleCockpitTitle => 'Shuttle Cockpit';
+
+  @override
+  String get interfaceShuttleCockpitSubtitle =>
+      'Captain\'s-seat view with two flight displays';
 }

@@ -140,6 +140,18 @@ abstract class AppLocalizations {
   /// **'seconds'**
   String get secondsLabel;
 
+  /// No description provided for @hoursLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'hrs'**
+  String get hoursLabel;
+
+  /// No description provided for @minutesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'min'**
+  String get minutesLabel;
+
   /// No description provided for @kmLabel.
   ///
   /// In en, this message translates to:
@@ -811,6 +823,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Volume'**
   String get atmosphereVolumeLabel;
+
+  /// No description provided for @shuttleDistanceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'DISTANCE'**
+  String get shuttleDistanceLabel;
+
+  /// No description provided for @shuttleFlightTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'FLIGHT TIME'**
+  String get shuttleFlightTimeLabel;
+
+  /// No description provided for @shuttleNavLockLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'NAV LOCK'**
+  String get shuttleNavLockLabel;
+
+  /// No description provided for @shuttleCmbRefLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'CMB REF'**
+  String get shuttleCmbRefLabel;
+
+  /// No description provided for @shuttleFlightActiveLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'FLIGHT ACTIVE'**
+  String get shuttleFlightActiveLabel;
+
+  /// No description provided for @shuttleAudioLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'AUDIO'**
+  String get shuttleAudioLabel;
+
+  /// No description provided for @shuttleTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'TIME'**
+  String get shuttleTimeLabel;
+
+  /// No description provided for @shuttleModeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'MODE'**
+  String get shuttleModeLabel;
+
+  /// No description provided for @interfaceStyleSectionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'INTERFACE STYLE'**
+  String get interfaceStyleSectionLabel;
+
+  /// No description provided for @colorPaletteSectionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'COLOR PALETTE'**
+  String get colorPaletteSectionLabel;
+
+  /// No description provided for @interfaceCosmicMinimalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cosmic Minimal'**
+  String get interfaceCosmicMinimalTitle;
+
+  /// No description provided for @interfaceCosmicMinimalSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Earth view with three counters'**
+  String get interfaceCosmicMinimalSubtitle;
+
+  /// No description provided for @interfaceShuttleCockpitTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Shuttle Cockpit'**
+  String get interfaceShuttleCockpitTitle;
+
+  /// No description provided for @interfaceShuttleCockpitSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Captain\'s-seat view with two flight displays'**
+  String get interfaceShuttleCockpitSubtitle;
 }
 
 class _AppLocalizationsDelegate

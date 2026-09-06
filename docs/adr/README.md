@@ -30,6 +30,7 @@ the spec should be updated in the same change.
 | [0007](0007-continuous-mode-journey-start-and-time-coordinates.md) | Continuous mode (integer, throttled), Journey Start screen, optional time coordinates | Accepted |
 | [0008](0008-webgl-earth-r3f-on-flutter-web.md) | WebGL Earth via R3F on Flutter web | Accepted |
 | [0009](0009-birth-field-picker-rows-and-loudness-normalized-soundscapes.md) | Birth-field picker rows; loudness-normalized soundscapes | Accepted |
+| [0010](0010-interface-styles-and-shuttle-cockpit.md) | Interface Styles: Cosmic Minimal / Shuttle Cockpit | Accepted |
 
 ## Related docs
 

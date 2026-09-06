@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/app_dependencies.dart';
 import 'app/cosmic_journey_app.dart';
+import 'app/journey_style_controller.dart';
 import 'app/locale_controller.dart';
 import 'app/readout_mode_controller.dart';
 import 'app/theme_controller.dart';
@@ -11,6 +12,7 @@ import 'core/clock.dart';
 import 'services/audio/audioplayers_ambient_audio_controller.dart';
 import 'services/journey_calculator/average_cmb_journey_calculator.dart';
 import 'services/local_storage/audio_preference_store.dart';
+import 'services/local_storage/journey_style_store.dart';
 import 'services/local_storage/locale_store.dart';
 import 'services/local_storage/milestone_preference_store.dart';
 import 'services/local_storage/profile_store.dart';
@@ -33,6 +35,7 @@ Future<void> main() async {
   final timeCoordinatesStore = SharedPreferencesTimeCoordinatesPreferenceStore(
     prefs,
   );
+  final journeyStyleStore = SharedPreferencesJourneyStyleStore(prefs);
   runApp(
     CosmicJourneyApp(
       dependencies: AppDependencies(
@@ -58,6 +61,10 @@ Future<void> main() async {
         timeCoordinatesController: TimeCoordinatesController(
           store: timeCoordinatesStore,
           storedEnabled: await timeCoordinatesStore.loadEnabled(),
+        ),
+        journeyStyleController: JourneyStyleController(
+          store: journeyStyleStore,
+          storedId: await journeyStyleStore.loadStyleId(),
         ),
       ),
     ),

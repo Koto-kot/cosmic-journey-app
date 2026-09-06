@@ -238,6 +238,45 @@ void main() {
     expect(find.text('NOW'), findsOneWidget);
     expect(find.text('2000 · approximate'), findsOneWidget);
   });
+
+  testWidgets(
+    'the main-screen time coordinates toggle shares state with the controller',
+    (tester) async {
+      final coordinates = TimeCoordinatesController(
+        store: InMemoryTimeCoordinatesPreferenceStore(),
+      );
+      await tester.pumpWidget(
+        _wrap(
+          JourneyScreen(
+            dependencies: testDependencies(
+              clock: clock,
+              ambientAudio: audio,
+              timeCoordinatesController: coordinates,
+            ),
+            profile: profile,
+          ),
+        ),
+      );
+      await tester.pump();
+      expect(find.byTooltip('Show time coordinates'), findsOneWidget);
+      expect(find.text('START'), findsNothing);
+
+      await tester.tap(find.byTooltip('Show time coordinates'));
+      await tester.pump();
+      expect(coordinates.enabled, isTrue);
+      expect(find.byTooltip('Hide time coordinates'), findsOneWidget);
+      await tester.pump(const Duration(milliseconds: 260));
+      expect(find.text('START'), findsOneWidget);
+      expect(find.text('NOW'), findsOneWidget);
+
+      await tester.tap(find.byTooltip('Hide time coordinates'));
+      await tester.pump();
+      expect(coordinates.enabled, isFalse);
+      expect(find.byTooltip('Show time coordinates'), findsOneWidget);
+      await tester.pump(const Duration(milliseconds: 260));
+      expect(find.text('START'), findsNothing);
+    },
+  );
 }
 
 Widget _wrap(

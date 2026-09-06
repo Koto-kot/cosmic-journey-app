@@ -388,5 +388,11 @@ class AppLocalizationsUk extends AppLocalizations {
   String get showTimeCoordinatesLabel => 'Показувати часові координати';
 
   @override
+  String get showTimeCoordinatesTooltip => 'Показати часові координати';
+
+  @override
+  String get hideTimeCoordinatesTooltip => 'Сховати часові координати';
+
+  @override
   String get atmosphereVolumeLabel => 'Гучність';
 }

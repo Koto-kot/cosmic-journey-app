@@ -168,5 +168,7 @@
   "journeyStartCoordLabel": "START",
   "nowCoordLabel": "NOW",
   "showTimeCoordinatesLabel": "Show time coordinates",
+  "showTimeCoordinatesTooltip": "Show time coordinates",
+  "hideTimeCoordinatesTooltip": "Hide time coordinates",
   "atmosphereVolumeLabel": "Volume"
 }

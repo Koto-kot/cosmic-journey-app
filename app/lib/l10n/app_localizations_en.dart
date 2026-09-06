@@ -389,5 +389,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get showTimeCoordinatesLabel => 'Show time coordinates';
 
   @override
+  String get showTimeCoordinatesTooltip => 'Show time coordinates';
+
+  @override
+  String get hideTimeCoordinatesTooltip => 'Hide time coordinates';
+
+  @override
   String get atmosphereVolumeLabel => 'Volume';
 }

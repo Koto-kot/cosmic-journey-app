@@ -12,6 +12,7 @@ import '../../core/widgets/earth_hero.dart';
 import '../../core/widgets/glow_divider.dart';
 import '../../core/widgets/language_switcher.dart';
 import '../../core/widgets/readout_mode_toggle.dart';
+import '../../core/widgets/time_coordinates_toggle.dart';
 import '../../services/journey_calculator/journey_profile.dart';
 import '../../services/journey_calculator/journey_snapshot.dart';
 import '../menu/menu_screen.dart';
@@ -162,6 +163,16 @@ class _JourneyScreenState extends State<JourneyScreen>
               ),
               Positioned(
                 bottom: 4,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: TimeCoordinatesToggle(
+                    controller: widget.dependencies.timeCoordinatesController,
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 4,
                 right: 4,
                 child: ReadoutModeToggle(
                   controller: widget.dependencies.readoutModeController,
@@ -266,8 +277,37 @@ class _JourneyReadout extends StatelessWidget {
                     SizedBox(height: compact ? 28 : 40),
                     EarthHero(size: earthSize),
                     SizedBox(height: compact ? 12 : 20),
-                    if (showTimeCoordinates)
-                      TimeCoordinatesBlock(clock: clock, profile: profile),
+                    AnimatedSwitcher(
+                      duration: reducedMotion
+                          ? Duration.zero
+                          : const Duration(milliseconds: 250),
+                      switchInCurve: Curves.easeOut,
+                      switchOutCurve: Curves.easeIn,
+                      transitionBuilder: (child, animation) {
+                        if (reducedMotion) {
+                          return child;
+                        }
+                        return FadeTransition(
+                          opacity: animation,
+                          child: SlideTransition(
+                            position: Tween<Offset>(
+                              begin: const Offset(0, -0.15),
+                              end: Offset.zero,
+                            ).animate(animation),
+                            child: child,
+                          ),
+                        );
+                      },
+                      child: showTimeCoordinates
+                          ? TimeCoordinatesBlock(
+                              key: const ValueKey('time-coordinates-on'),
+                              clock: clock,
+                              profile: profile,
+                            )
+                          : const SizedBox(
+                              key: ValueKey('time-coordinates-off'),
+                            ),
+                    ),
                     Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

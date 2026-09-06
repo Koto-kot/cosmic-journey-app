@@ -57,7 +57,10 @@ current date/time (`dd.MM.yyyy · HH:mm:ss` / `dd MMM yyyy · HH:mm:ss`). It
 ticks on its own 1Hz timer, independent of the readout mode's cadence, so
 switching to Continuous does not speed it up. Off by default
 (`show_time_coordinates_v1`), visually secondary (small, muted, no border),
-toggled in Settings.
+toggled from Settings and from a compact icon button on the main Journey
+screen (bottom center, between the Atmosphere and Readout Mode toggles);
+both controls share the same `TimeCoordinatesController`. The main-screen
+block fades and slides in/out over ~250ms when toggled.
 
 **Ambient audio**: default volume lowered to 0.2 (was 0.32; recommended
 range 0.15-0.25), fades in over ~1.5s from 0 to the configured volume, and

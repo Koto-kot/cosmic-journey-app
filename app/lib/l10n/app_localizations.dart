@@ -794,6 +794,18 @@ abstract class AppLocalizations {
   /// **'Show time coordinates'**
   String get showTimeCoordinatesLabel;
 
+  /// No description provided for @showTimeCoordinatesTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Show time coordinates'**
+  String get showTimeCoordinatesTooltip;
+
+  /// No description provided for @hideTimeCoordinatesTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide time coordinates'**
+  String get hideTimeCoordinatesTooltip;
+
   /// No description provided for @atmosphereVolumeLabel.
   ///
   /// In en, this message translates to:

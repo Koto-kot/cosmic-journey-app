@@ -168,5 +168,7 @@
   "journeyStartCoordLabel": "ПОЧАТОК",
   "nowCoordLabel": "ЗАРАЗ",
   "showTimeCoordinatesLabel": "Показувати часові координати",
+  "showTimeCoordinatesTooltip": "Показати часові координати",
+  "hideTimeCoordinatesTooltip": "Сховати часові координати",
   "atmosphereVolumeLabel": "Гучність"
 }
